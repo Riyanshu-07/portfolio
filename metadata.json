@@ -1,0 +1,6 @@
+{
+  "name": "Riyanshu.OS - 3D AI Digital Twin & Neural Engineering Portfolio",
+  "description": "Next-generation 3D interactive portfolio and digital twin for Riyanshu Kandwal, AI/ML Engineer. Features real-time neural particle physics, simulated ray-traced lighting, spatial audio, haptic feedback, theme switcher, interactive ML sandbox, and performance telemetry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
