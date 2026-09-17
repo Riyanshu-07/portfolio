@@ -1,13 +1,13 @@
 # Riyanshu.OS — 3D AI Digital Twin & Neural Engineering Portfolio
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Online-00E5FF?style=for-the-badge&logo=google-chrome&logoColor=black)](https://ais-pre-5imutcwjrbkq4l46sh6teo-433415658876.asia-southeast1.run.app)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Online-00E5FF?style=for-the-badge&logo=google-chrome&logoColor=black)](https://riyanshu-os-3d-ai-digital-twin-neural-engineering.ai.studio)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React 19](https://img.shields.io/badge/React_19-20232A?style=flat&logo=react&logoColor=61DAFB)](https://react.dev/)
 [![Three.js](https://img.shields.io/badge/Three.js-black?style=flat&logo=three.js&logoColor=white)](https://threejs.org/)
 [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Gemini 3.8 Flash](https://img.shields.io/badge/Gemini_3.8_Flash-8E75B2?style=flat&logo=google&logoColor=white)](https://ai.google.dev/)
 
-> 🌐 **Public Live Preview URL**: [https://ais-pre-5imutcwjrbkq4l46sh6teo-433415658876.asia-southeast1.run.app](https://ais-pre-5imutcwjrbkq4l46sh6teo-433415658876.asia-southeast1.run.app)
+> 🌐 **Public Live Preview URL**: [https://ais-pre-5imutcwjrbkq4l46sh6teo-433415658876.asia-southeast1.run.app](https://riyanshu-os-3d-ai-digital-twin-neural-engineering.ai.studio)
 > *(Accessible to everyone worldwide on desktop and mobile browsers)*
 
 An interactive, high-performance 3D portfolio and digital twin engineered by **Riyanshu Kandwal** (AI/ML Engineer). Built with real-time neural particle physics, simulated ray-traced lighting, spatial audio feedback, interactive ML sandboxes, anti-cheat leaderboard verification, and server-side Gemini intelligence.
