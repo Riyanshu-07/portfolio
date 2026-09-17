@@ -258,6 +258,34 @@ class SpatialAudioEngine {
     });
   }
 
+  // Success Confirmation Chord
+  public playSuccess() {
+    if (this.isMuted) return;
+    const ctx = this.initCtx();
+    if (!ctx) return;
+
+    const notes = [523.25, 659.25, 783.99, 1046.5]; // C Major chord
+    notes.forEach((freq, i) => {
+      try {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const start = ctx.currentTime + i * 0.06;
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, start);
+
+        gain.gain.setValueAtTime(0.08, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.35);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(start);
+        osc.stop(start + 0.4);
+      } catch (e) {}
+    });
+  }
+
   // Toggle ambient cyber drone
   public toggleAmbient() {
     const ctx = this.initCtx();

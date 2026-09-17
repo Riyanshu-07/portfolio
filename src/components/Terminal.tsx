@@ -49,7 +49,10 @@ export const TerminalComponent: React.FC<TerminalProps> = ({
 
     switch (cmd) {
       case 'help':
-        response = "Commands: 'whoami', 'projects', 'skills', 'adain', 'twin', 'stats', 'theme <name>', 'clear'";
+        response = "Commands: 'whoami', 'projects', 'skills', 'adain', 'twin', 'stats', 'themes', 'theme <name>', 'clear'";
+        break;
+      case 'themes':
+        response = "12 Neural Themes: 'cyberpunk', 'tokyo', 'emerald', 'nord', 'dracula', 'amber', 'solar', 'synthwave', 'matrix', 'nebula', 'onyx', 'titanium'";
         break;
       case 'whoami':
         response = 'Riyanshu Kandwal — AI/ML Engineer building intelligent systems that learn, create, and solve real-world problems.';
@@ -72,13 +75,17 @@ export const TerminalComponent: React.FC<TerminalProps> = ({
         break;
       case 'theme':
         const targetTheme = args[0] as ThemeMode;
-        if (['cyberpunk', 'amber', 'matrix', 'nebula', 'titanium'].includes(targetTheme)) {
+        const validThemes: ThemeMode[] = [
+          'cyberpunk', 'tokyo', 'emerald', 'nord', 'dracula', 'amber',
+          'solar', 'synthwave', 'matrix', 'nebula', 'onyx', 'titanium'
+        ];
+        if (validThemes.includes(targetTheme)) {
           if (onThemeChange) onThemeChange(targetTheme);
           response = `Theme switched to '${targetTheme}'`;
           resType = 'success';
           soundEngine.playBoot();
         } else {
-          response = "Invalid theme. Options: 'cyberpunk', 'amber', 'matrix', 'nebula', 'titanium'";
+          response = "Invalid theme. Type 'themes' to list all 12 available palettes (e.g. 'theme tokyo', 'theme emerald', 'theme nord')";
           resType = 'warn';
         }
         break;

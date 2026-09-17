@@ -33,22 +33,32 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   }, [isOpen]);
 
   const commands = [
-    { id: 'twin', label: 'Chat with AETHER AI Digital Twin', category: 'AI Twin', action: () => onNavigate('digital-twin'), icon: <Bot className="w-4 h-4 text-cyan-400" /> },
-    { id: 'sandboxes', label: 'Interactive ML Sandbox (AdaIN & SHAP)', category: 'Algorithms', action: () => onNavigate('sandboxes'), icon: <Sliders className="w-4 h-4 text-violet-400" /> },
-    { id: 'physics', label: 'Quantum Particle Physics Playground', category: 'Simulations', action: () => onNavigate('physics'), icon: <Terminal className="w-4 h-4 text-amber-400" /> },
-    { id: 'analytics', label: 'Performance Analytics & Telemetry', category: 'System', action: () => onNavigate('analytics'), icon: <Shield className="w-4 h-4 text-emerald-400" /> },
-    { id: 'leaderboard', label: 'Global Leaderboard & Social Invite', category: 'Social', action: () => onNavigate('leaderboard'), icon: <Trophy className="w-4 h-4 text-yellow-400" /> },
+    { id: 'about', label: 'About & Identity (Graphic Era University)', category: 'Bio', action: () => onNavigate('about'), icon: <Compass className="w-4 h-4 text-cyan-400" /> },
     { id: 'projects', label: 'Browse 9+ Shipped AI/ML Projects', category: 'Work', action: () => onNavigate('projects'), icon: <Code className="w-4 h-4 text-blue-400" /> },
+    { id: 'sandboxes', label: 'Interactive ML Lab (AdaIN Style & SHAP)', category: 'Algorithms', action: () => onNavigate('sandboxes'), icon: <Sliders className="w-4 h-4 text-violet-400" /> },
+    { id: 'twin', label: 'Chat with AETHER AI Digital Twin', category: 'AI Twin', action: () => onNavigate('digital-twin'), icon: <Bot className="w-4 h-4 text-cyan-400" /> },
+    { id: 'education', label: 'Education & Certifications (BCA & Apna College)', category: 'Academics', action: () => onNavigate('education'), icon: <Code className="w-4 h-4 text-emerald-400" /> },
+    { id: 'skills', label: 'Technical Skills Matrix (PyTorch, CV, NLP)', category: 'Skills', action: () => onNavigate('skills'), icon: <Code className="w-4 h-4 text-amber-400" /> },
     { id: 'journey', label: 'Engineering Journey: 7 Stages to Agentic AI', category: 'Bio', action: () => onNavigate('journey'), icon: <Compass className="w-4 h-4 text-pink-400" /> },
-    // Theme switches
-    { id: 'theme-cyberpunk', label: 'Switch Theme: Cyberpunk OS (Cyan/Violet)', category: 'Theme', action: () => onSelectTheme('cyberpunk'), icon: <Palette className="w-4 h-4 text-cyan-400" /> },
-    { id: 'theme-amber', label: 'Switch Theme: Amber Luxury (Warm Core)', category: 'Theme', action: () => onSelectTheme('amber'), icon: <Palette className="w-4 h-4 text-amber-400" /> },
-    { id: 'theme-matrix', label: 'Switch Theme: Matrix Quantum (Emerald)', category: 'Theme', action: () => onSelectTheme('matrix'), icon: <Palette className="w-4 h-4 text-emerald-400" /> },
-    { id: 'theme-nebula', label: 'Switch Theme: Nebula Synth (Electric Pink)', category: 'Theme', action: () => onSelectTheme('nebula'), icon: <Palette className="w-4 h-4 text-pink-400" /> },
-    { id: 'theme-titanium', label: 'Switch Theme: Titanium Light Tech', category: 'Theme', action: () => onSelectTheme('titanium'), icon: <Palette className="w-4 h-4 text-slate-300" /> },
+    { id: 'contact', label: 'Contact Riyanshu (Direct Message / Email)', category: 'Contact', action: () => onNavigate('contact'), icon: <Terminal className="w-4 h-4 text-cyan-300" /> },
+    // Theme switches (All 12 neural palettes)
+    { id: 'theme-cyberpunk', label: 'Switch Theme: Cyberpunk OS (Electric Cyan/Violet)', category: 'Theme', action: () => onSelectTheme('cyberpunk'), icon: <Palette className="w-4 h-4 text-[#4adede]" /> },
+    { id: 'theme-tokyo', label: 'Switch Theme: Tokyo Night (Periwinkle & Azure)', category: 'Theme', action: () => onSelectTheme('tokyo'), icon: <Palette className="w-4 h-4 text-[#7aa2f7]" /> },
+    { id: 'theme-emerald', label: 'Switch Theme: DeepMind Emerald (Neural Mint & Bio-Green)', category: 'Theme', action: () => onSelectTheme('emerald'), icon: <Palette className="w-4 h-4 text-[#10b981]" /> },
+    { id: 'theme-nord', label: 'Switch Theme: Nordic Frost (Arctic Ice Blue & Polar Aurora)', category: 'Theme', action: () => onSelectTheme('nord'), icon: <Palette className="w-4 h-4 text-[#88c0d0]" /> },
+    { id: 'theme-dracula', label: 'Switch Theme: Dracula Pro (Vampiric Lilac & Neon Candy)', category: 'Theme', action: () => onSelectTheme('dracula'), icon: <Palette className="w-4 h-4 text-[#bd93f9]" /> },
+    { id: 'theme-amber', label: 'Switch Theme: Amber Luxury (Warm Cognac & Golden Flare)', category: 'Theme', action: () => onSelectTheme('amber'), icon: <Palette className="w-4 h-4 text-[#ff9c5c]" /> },
+    { id: 'theme-solar', label: 'Switch Theme: Solar Flare (Supernova Embers & Gold)', category: 'Theme', action: () => onSelectTheme('solar'), icon: <Palette className="w-4 h-4 text-[#f59e0b]" /> },
+    { id: 'theme-synthwave', label: 'Switch Theme: Synthwave 84 (Arcade Sunset & Hot Pink)', category: 'Theme', action: () => onSelectTheme('synthwave'), icon: <Palette className="w-4 h-4 text-[#f43f5e]" /> },
+    { id: 'theme-matrix', label: 'Switch Theme: Matrix Quantum (Terminal Phosphor Green)', category: 'Theme', action: () => onSelectTheme('matrix'), icon: <Palette className="w-4 h-4 text-[#3ddc97]" /> },
+    { id: 'theme-nebula', label: 'Switch Theme: Nebula Synth (Deep Celestial Ultraviolet)', category: 'Theme', action: () => onSelectTheme('nebula'), icon: <Palette className="w-4 h-4 text-[#ff3399]" /> },
+    { id: 'theme-onyx', label: 'Switch Theme: Onyx Monolith (Hyper-Minimalist Carbon White)', category: 'Theme', action: () => onSelectTheme('onyx'), icon: <Palette className="w-4 h-4 text-[#ffffff]" /> },
+    { id: 'theme-titanium', label: 'Switch Theme: Titanium Slate (Aerospace Cobalt & Steel)', category: 'Theme', action: () => onSelectTheme('titanium'), icon: <Palette className="w-4 h-4 text-[#38bdf8]" /> },
     // External links
-    { id: 'ext-github', label: 'GitHub Profile (github.com/Riyanshu-07)', category: 'Link', action: () => window.open('https://github.com/Riyanshu-07', '_blank'), icon: <ExternalLink className="w-4 h-4 text-gray-400" /> },
-    { id: 'ext-linkedin', label: 'LinkedIn Profile', category: 'Link', action: () => window.open('https://www.linkedin.com/in/riyanshu-kandwal-555433309', '_blank'), icon: <ExternalLink className="w-4 h-4 text-gray-400" /> },
+    { id: 'ext-linkedin', label: 'LinkedIn Profile (in/riyanshu-kandwal-555433309)', category: 'Link', action: () => window.open('https://www.linkedin.com/in/riyanshu-kandwal-555433309', '_blank'), icon: <ExternalLink className="w-4 h-4 text-blue-400" /> },
+    { id: 'ext-github', label: 'GitHub Repositories (github.com/Riyanshu-07)', category: 'Link', action: () => window.open('https://github.com/Riyanshu-07', '_blank'), icon: <ExternalLink className="w-4 h-4 text-purple-400" /> },
+    { id: 'ext-leetcode', label: 'LeetCode (leetcode.com/u/Riyanshu07)', category: 'Link', action: () => window.open('https://leetcode.com/u/Riyanshu07', '_blank'), icon: <ExternalLink className="w-4 h-4 text-amber-400" /> },
+    { id: 'ext-gfg', label: 'GeeksforGeeks Profile', category: 'Link', action: () => window.open('https://www.geeksforgeeks.org/profile/riyanshu07', '_blank'), icon: <ExternalLink className="w-4 h-4 text-emerald-400" /> },
   ];
 
   const filtered = commands.filter(

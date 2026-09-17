@@ -1,28 +1,1763 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Riyanshu.OS - 3D AI Digital Twin & Neural Engineering Portfolio</title>
-    <meta name="description" content="Next-generation 3D interactive portfolio and digital twin for Riyanshu Kandwal, AI/ML Engineer. Features real-time neural particle physics, simulated ray-traced lighting, spatial audio, haptic feedback, theme switcher, interactive ML sandbox, and performance telemetry." />
-    <meta property="og:title" content="Riyanshu.OS - 3D AI Digital Twin & Neural Engineering Portfolio" />
-    <meta property="og:description" content="Next-generation 3D interactive portfolio and digital twin for Riyanshu Kandwal, AI/ML Engineer. Features real-time neural particle physics, simulated ray-traced lighting, spatial audio, haptic feedback, theme switcher, interactive ML sandbox, and performance telemetry." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b7cff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolygon points='12 2 2 7 12 12 22 7 12 2'%3E%3C/polygon%3E%3Cpolyline points='2 17 12 22 22 17'%3E%3C/polyline%3E%3Cpolyline points='2 12 12 17 22 12'%3E%3C/polyline%3E%3C/svg%3E" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-[#05060a] text-[#e7e9f0] selection:bg-[#8b7cff] selection:text-black overflow-x-hidden">
-    <noscript>
-      <div style="padding: 2rem; text-align: center; color: #fff; font-family: sans-serif;">
-        <h2>Riyanshu.OS</h2>
-        <p>This interactive 3D neural application requires JavaScript to be enabled.</p>
-      </div>
-    </noscript>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riyanshu Kandwal — AI & Machine Learning Systems Engineer</title>
+  <meta name="description" content="Portfolio of Riyanshu Kandwal — AI/ML Engineer engineering practical systems across Computer Vision, Generative AI, RAG, and Biometrics. Solved 500+ DSA problems.">
+  <meta property="og:title" content="Riyanshu Kandwal — AI & Machine Learning Systems Engineer">
+  <meta property="og:description" content="Interactive portfolio of Riyanshu Kandwal — RealityDiff AI, AETHER 3D Twin, SnapClass Biometrics, AdaIN Style Transfer & 500+ Solved Algorithmic Problems.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='2'%3E%3Cpolygon points='12 2 2 7 12 12 22 7 12 2'%3E%3C/polygon%3E%3Cpolyline points='2 17 12 22 22 17'%3E%3C/polyline%3E%3C/svg%3E">
 
+  <!-- Typography: JetBrains Mono + Space Grotesk + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS & CDN Scripts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            display: ['Space Grotesk', 'sans-serif']
+          },
+          colors: {
+            brand: {
+              bg: '#050608',
+              card: 'rgba(11, 15, 23, 0.82)',
+              cyan: '#22d3ee',
+              green: '#4ade80',
+              violet: '#a855f7',
+              purple: '#7c3aed',
+              amber: '#f59e0b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg: #050608;
+      --panel: rgba(12, 16, 24, 0.82);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(34, 211, 238, 0.35);
+      --accent-cyan: #22d3ee;
+      --accent-purple: #7c3aed;
+      --accent-green: #4ade80;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      background-color: var(--bg);
+      color: #f1f5f9;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    ::selection {
+      background: #22d3ee;
+      color: #000;
+    }
+
+    /* Custom high-performance glass morphism */
+    .glass-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-panel:hover {
+      border-color: var(--border-hover);
+    }
+
+    /* Subtle cyber grid overlay */
+    .cyber-grid {
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at 50% 20%, black 40%, transparent 80%);
+    }
+
+    /* Pulsing glow animation */
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.35; transform: scale(1); }
+      50% { opacity: 0.65; transform: scale(1.04); }
+    }
+    .animate-ambient-glow {
+      animation: pulse-slow 8s ease-in-out infinite;
+    }
+
+    /* Code highlights */
+    .hl-cyan { color: #22d3ee; }
+    .hl-green { color: #4ade80; }
+    .hl-purple { color: #c084fc; }
+    .hl-amber { color: #fbbf24; }
+    .hl-dim { color: #64748b; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #050608; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+  </style>
+</head>
+
+<body class="relative min-h-screen selection:bg-cyan-400 selection:text-black">
+
+  <!-- 3D Neural WebGL Canvas Container -->
+  <div id="three-canvas-container" class="fixed inset-0 pointer-events-none z-0 opacity-70"></div>
+
+  <!-- Ambient Light Orbs and Geometric Grids -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-cyan-500/15 via-purple-600/10 to-transparent rounded-full blur-3xl opacity-60 animate-ambient-glow"></div>
+    <div class="absolute top-[35%] -right-48 w-[650px] h-[650px] bg-purple-600/10 rounded-full blur-3xl opacity-40"></div>
+    <div class="absolute top-[65%] -left-48 w-[650px] h-[650px] bg-emerald-500/10 rounded-full blur-3xl opacity-40"></div>
+    <div class="absolute inset-0 cyber-grid pointer-events-none"></div>
+  </div>
+
+  <!-- FIXED NAVIGATION BAR -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-[#050608]/75 backdrop-blur-xl border-b border-white/10 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      
+      <!-- Brand Identity -->
+      <a href="#top" class="flex items-center gap-3 group">
+        <div class="relative flex items-center justify-center w-9 h-9 rounded-full overflow-hidden border border-white/20 group-hover:border-cyan-400 transition-colors shadow-lg shadow-cyan-500/10">
+          <img src="/riyanshu.png" alt="Riyanshu Kandwal" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
+          <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-[#050608]"></span>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-display font-bold text-white text-sm tracking-tight flex items-center gap-1.5">
+            RIYANSHU KANDWAL
+            <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-normal">AI/ML</span>
+          </span>
+          <span class="text-[10px] font-mono text-gray-400 tracking-wider">SYSTEMS ENGINEER · GEU '27</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Anchors -->
+      <nav class="hidden md:flex items-center gap-7 text-xs font-mono font-medium text-gray-400">
+        <a href="#systems" class="hover:text-cyan-400 transition-colors">// 01 SYSTEMS</a>
+        <a href="#architecture-lab" class="hover:text-cyan-400 transition-colors">// 02 ARCHITECTURE</a>
+        <a href="#digital-twin" class="hover:text-cyan-400 transition-colors">// 03 AI TWIN</a>
+        <a href="#algorithms" class="hover:text-cyan-400 transition-colors">// 04 500+ DSA</a>
+        <a href="#about" class="hover:text-cyan-400 transition-colors">// 05 PHILOSOPHY</a>
+        <a href="#contact" class="hover:text-cyan-400 transition-colors">// 06 CONTACT</a>
+      </nav>
+
+      <!-- Action Controls -->
+      <div class="flex items-center gap-2.5">
+        <!-- 3D Canvas Switcher -->
+        <button onclick="toggleVisualMode()" id="viz-btn" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-cyan-400/40 text-[11px] font-mono text-gray-300 transition-all" title="Toggle 3D visual mode">
+          <i data-lucide="cpu" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span id="viz-label">SYNAPSE 3D</span>
+        </button>
+
+        <!-- Sound FX Toggle -->
+        <button onclick="toggleAudio()" id="sound-btn" class="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-colors" title="Toggle audio feedback">
+          <i data-lucide="volume-2" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Recruiter Dossier Trigger -->
+        <button onclick="openRecruiterModal()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/30 text-xs font-mono font-semibold text-emerald-300 transition-all">
+          <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">RECRUITER PACK</span>
+        </button>
+
+        <!-- GitHub Profile -->
+        <a href="https://github.com/Riyanshu-07" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:border-cyan-400/40 transition-colors">
+          <i data-lucide="github" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main id="top" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-24 space-y-28">
+
+    <!-- HERO SECTION -->
+    <section class="min-h-[85vh] flex flex-col justify-center pt-8 sm:pt-14 relative">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+        <!-- Left Column: Manifesto & Narrative -->
+        <div class="lg:col-span-7 space-y-7">
+          
+          <!-- System Status Pill -->
+          <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-300">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            </span>
+            <span>AVAILABLE FOR AI/ML ROLES & INTERNSHIPS · 2027 GRAD</span>
+          </div>
+
+          <!-- Headline -->
+          <div class="space-y-3">
+            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black font-display tracking-tight text-white leading-[0.92]">
+              I BUILD<br>
+              <span class="bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-transparent">AI SYSTEMS.</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-400 max-w-2xl font-light leading-relaxed pt-2">
+              I don't just train models in Jupyter notebooks. I design, benchmark, and ship complete end-to-end architectures across <span class="text-white font-medium">Computer Vision</span>, <span class="text-white font-medium">Generative AI</span>, and <span class="text-white font-medium">Multimodal RAG</span>.
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a href="#systems" class="px-5 py-3 rounded-xl bg-white hover:bg-cyan-400 text-black font-semibold text-xs sm:text-sm font-mono transition-all flex items-center gap-2 group shadow-lg shadow-white/5">
+              <span>EXPLORE DEPLOYED SYSTEMS</span>
+              <i data-lucide="arrow-down-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform"></i>
+            </a>
+            <a href="#digital-twin" class="px-5 py-3 rounded-xl glass-panel text-white hover:text-cyan-300 text-xs sm:text-sm font-mono flex items-center gap-2">
+              <i data-lucide="bot" class="w-4 h-4 text-cyan-400"></i>
+              <span>QUERY AI TWIN</span>
+            </a>
+            <button onclick="copyEmail()" class="px-4 py-3 rounded-xl glass-panel text-gray-400 hover:text-white text-xs sm:text-sm font-mono flex items-center gap-2">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span id="hero-copy-btn">COPY EMAIL</span>
+            </button>
+          </div>
+
+          <!-- Telemetry Specs Bar -->
+          <div class="grid grid-cols-3 border-y border-white/10 py-4 max-w-xl font-mono text-xs">
+            <div class="pr-4 border-r border-white/10">
+              <div class="text-xl sm:text-2xl font-bold text-cyan-400 font-display">500+</div>
+              <div class="text-[10px] text-gray-500 uppercase tracking-wider">DSA Solved (Java)</div>
+            </div>
+            <div class="px-4 border-r border-white/10">
+              <div class="text-xl sm:text-2xl font-bold text-emerald-400 font-display">~42 ms</div>
+              <div class="text-[10px] text-gray-500 uppercase tracking-wider">AdaIN Inference GPU</div>
+            </div>
+            <div class="pl-4">
+              <div class="text-xl sm:text-2xl font-bold text-purple-400 font-display">5+ Shipped</div>
+              <div class="text-[10px] text-gray-500 uppercase tracking-wider">Open Source Models</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Interactive Reactive Terminal & Verified Engineer Identity -->
+        <div class="lg:col-span-5 space-y-3">
+          
+          <!-- Executive ID Card Header -->
+          <div class="glass-panel rounded-2xl p-3.5 border border-white/10 flex items-center justify-between shadow-xl">
+            <div class="flex items-center gap-3">
+              <div class="relative w-10 h-10 rounded-full overflow-hidden border border-emerald-400/50 shadow-md shrink-0">
+                <img src="/riyanshu.png" alt="Riyanshu Kandwal" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
+                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border border-[#050608]"></span>
+              </div>
+              <div class="leading-tight">
+                <div class="text-sm font-bold text-white font-display flex items-center gap-1.5">
+                  Riyanshu Kandwal
+                  <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-400/30">VERIFIED</span>
+                </div>
+                <div class="text-[10px] font-mono text-gray-400">Graphic Era '27 · Prime AI/ML · 500+ DSA</div>
+              </div>
+            </div>
+
+            <!-- View Switcher Tabs -->
+            <div class="flex items-center gap-1 bg-black/50 p-1 rounded-xl border border-white/10 text-[11px] font-mono">
+              <button id="hero-tab-term" onclick="switchHeroTab('term')" class="px-2.5 py-1 rounded-lg bg-white/10 text-white font-semibold transition-all">
+                TERMINAL
+              </button>
+              <button id="hero-tab-photo" onclick="switchHeroTab('photo')" class="px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition-all">
+                PHOTO ID
+              </button>
+            </div>
+          </div>
+
+          <!-- Main Hero Box: Terminal or Photo Card -->
+          <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl shadow-black/80 border border-white/10">
+            
+            <!-- Terminal View Container -->
+            <div id="hero-view-term" class="block">
+              <!-- Terminal Window Bar -->
+              <div class="h-10 bg-black/60 border-b border-white/10 px-4 flex items-center justify-between font-mono text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+                  <span class="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+                  <span class="text-gray-400 ml-2 text-[11px]">riyanshu.os — kernel-v3.2</span>
+                </div>
+                <div class="flex items-center gap-2 text-[10px] text-gray-500">
+                  <span>PORT 3000</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                </div>
+              </div>
+
+              <!-- Terminal Output Body -->
+              <div id="terminal-body" class="p-5 font-mono text-xs leading-relaxed h-[320px] overflow-y-auto space-y-2 bg-[#080b12]/90">
+                <div><span class="hl-dim">$</span> initializing <span class="hl-purple">riyanshu.profile.json</span>...</div>
+                <div><span class="hl-green">✓</span> PyTorch 2.x CUDA kernels initialized</div>
+                <div><span class="hl-green">✓</span> VGG-19 AdaIN encoder loaded [frozen weights]</div>
+                <div><span class="hl-green">✓</span> BoT-SORT temporal trackers active</div>
+                <div><span class="hl-green">✓</span> RAG vector store & pgvector synchronized</div>
+                <div class="pt-2 text-gray-400">
+                  <span class="hl-cyan">engineer</span> = {<br>
+                  &nbsp;&nbsp;<span class="text-gray-300">name</span>: <span class="hl-green">"Riyanshu Kandwal"</span>,<br>
+                  &nbsp;&nbsp;<span class="text-gray-300">education</span>: <span class="hl-amber">"BCA @ Graphic Era Univ (2027)"</span>,<br>
+                  &nbsp;&nbsp;<span class="text-gray-300">verified_cert</span>: <span class="hl-purple">"Prime AI/ML (Apna College)"</span>,<br>
+                  &nbsp;&nbsp;<span class="text-gray-300">dsa_mastery</span>: <span class="hl-emerald">"500+ (LeetCode @Riyanshu07, GFG @riyanshu07)"</span>,<br>
+                  &nbsp;&nbsp;<span class="text-gray-300">core_domains</span>: [<span class="hl-cyan">"Computer Vision"</span>, <span class="hl-cyan">"Deep Learning"</span>, <span class="hl-cyan">"RAG"</span>],<br>
+                  &nbsp;&nbsp;<span class="text-gray-300">status</span>: <span class="hl-green">"Building & Open to Opportunities"</span><br>
+                  }
+                </div>
+                <div class="pt-2 text-[11px] text-gray-500">
+                  Type or click a command below to inspect:
+                </div>
+              </div>
+
+              <!-- Quick Interactive Commands -->
+              <div class="p-3 bg-black/40 border-t border-white/10 flex flex-wrap gap-1.5 font-mono text-[11px]">
+                <button onclick="runTerminalCmd('eval realitydiff')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-cyan-500/10 text-gray-300 hover:text-cyan-300 border border-white/5 transition-colors">
+                  eval realitydiff
+                </button>
+                <button onclick="runTerminalCmd('cat adain_formula')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-purple-500/10 text-gray-300 hover:text-purple-300 border border-white/5 transition-colors">
+                  cat adain_formula
+                </button>
+                <button onclick="runTerminalCmd('dsa stats')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-emerald-500/10 text-gray-300 hover:text-emerald-300 border border-white/5 transition-colors">
+                  dsa stats
+                </button>
+                <button onclick="runTerminalCmd('whoami')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-amber-500/10 text-gray-300 hover:text-amber-300 border border-white/5 transition-colors">
+                  whoami
+                </button>
+                <button onclick="runTerminalCmd('clear')" class="px-2.5 py-1 rounded bg-white/5 hover:bg-red-500/10 text-gray-500 hover:text-red-400 border border-white/5 transition-colors">
+                  clear
+                </button>
+              </div>
+            </div>
+
+            <!-- Photo ID View Container (Hidden initially) -->
+            <div id="hero-view-photo" class="hidden p-4 bg-[#080b12]/95 space-y-4">
+              <div class="aspect-[3/4] max-h-[360px] w-full rounded-xl overflow-hidden relative border border-white/10 bg-black/60 shadow-xl">
+                <img src="/riyanshu.png" alt="Riyanshu Kandwal Executive Photo" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+                <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                  <div>
+                    <div class="text-xs font-mono text-emerald-400 flex items-center gap-1">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                      100% REAL PROFILE
+                    </div>
+                    <div class="text-lg font-bold font-display text-white">Riyanshu Kandwal</div>
+                  </div>
+                  <div class="text-right text-[11px] font-mono text-gray-300">
+                    <div>Java &amp; Python</div>
+                    <div class="text-cyan-300">O(N) vs O(N²)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick profile buttons -->
+              <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                <a href="https://leetcode.com/u/Riyanshu07" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-black/50 border border-amber-400/30 text-amber-300 text-center hover:bg-amber-400/10 transition-colors">
+                  LeetCode: @Riyanshu07 ↗
+                </a>
+                <a href="https://www.geeksforgeeks.org/user/riyanshu07" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-black/50 border border-emerald-400/30 text-emerald-300 text-center hover:bg-emerald-400/10 transition-colors">
+                  GFG: @riyanshu07 ↗
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 01: PRODUCTION SYSTEMS -->
+    <section id="systems" class="space-y-10 scroll-mt-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6">
+        <div class="space-y-2">
+          <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">// 01 PRODUCTION ARCHITECTURES</span>
+          <h2 class="text-3xl sm:text-5xl font-bold font-display text-white tracking-tight">Shipped AI Systems.</h2>
+        </div>
+        <p class="text-sm text-gray-400 max-w-md font-light leading-relaxed">
+          Four distinct production architectures tackling edge latency, temporal computer vision, biometric anti-spoofing, and multi-agent coordination. Click any card to inspect full system specs.
+        </p>
+      </div>
+
+      <!-- Bento Systems Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+        <!-- SYSTEM 01: RealityDiff AI -->
+        <div onclick="openModal('reality')" class="md:col-span-7 glass-panel p-7 rounded-2xl cursor-pointer group relative overflow-hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono text-cyan-400 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/20">
+              SYS_01 · COMPUTER VISION & TEMPORAL TRACKING
+            </span>
+            <div class="flex items-center gap-1.5 text-xs font-mono text-gray-400 group-hover:text-cyan-400 transition-colors">
+              <span>INSPECT ARCHITECTURE</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-2xl sm:text-3xl font-bold font-display text-white group-hover:text-cyan-300 transition-colors">
+              RealityDiff AI
+            </h3>
+            <p class="text-sm font-mono text-gray-400">Persistent Scene Change Detection & Spatial Drift Filtering</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 font-mono text-xs">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE ENGINEERING PROBLEM</div>
+            <p class="text-gray-300 font-sans text-xs leading-relaxed">
+              Standard frame differencing and standalone object detectors trigger massive false positives from transient moving occluders, lighting shifts, and bounding-box jitter.
+            </p>
+          </div>
+
+          <div class="space-y-2 font-mono text-xs text-gray-300">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE SHIP & INNOVATION</div>
+            <ul class="list-disc list-inside space-y-1 text-gray-300 font-sans text-xs">
+              <li>Coupled YOLO26 real-time object detection with BoT-SORT multi-object motion tracking.</li>
+              <li>Engineered a spatial-drift confirmation matrix and temporal confirmation buffer to distinguish true additions/removals from transient visual noise.</li>
+            </ul>
+          </div>
+
+          <div class="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Python</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">YOLO26</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">BoT-SORT</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Supabase</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Streamlit</span>
+            </div>
+            <span class="text-cyan-400 text-[11px] font-bold">Temporal IoU Gate ✓</span>
+          </div>
+        </div>
+
+        <!-- SYSTEM 02: AETHER 3D Digital Twin -->
+        <div onclick="openModal('aether')" class="md:col-span-5 glass-panel p-7 rounded-2xl cursor-pointer group relative overflow-hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono text-purple-400 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-400/20">
+              SYS_02 · MULTIMODAL RAG & 3D AVATAR
+            </span>
+            <div class="flex items-center gap-1.5 text-xs font-mono text-gray-400 group-hover:text-purple-400 transition-colors">
+              <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-2xl sm:text-3xl font-bold font-display text-white group-hover:text-purple-300 transition-colors">
+              AETHER
+            </h3>
+            <p class="text-sm font-mono text-gray-400">3D AI Digital Twin with Semantic Episodic Memory</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 font-mono text-xs">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE ENGINEERING PROBLEM</div>
+            <p class="text-gray-300 font-sans text-xs leading-relaxed">
+              LLM chat wrappers lack persistent cross-session identity, suffer high context window costs, and feel cold and disembodied.
+            </p>
+          </div>
+
+          <div class="space-y-2 font-mono text-xs text-gray-300">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE SHIP & INNOVATION</div>
+            <p class="text-gray-300 font-sans text-xs leading-relaxed">
+              Integrated Sentence-Transformers semantic retrieval with pgvector long-term memory, driving real-time Web Audio lip-sync and Three.js 3D avatar reactions.
+            </p>
+          </div>
+
+          <div class="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">RAG</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Three.js</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">pgvector</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Web Audio</span>
+            </div>
+            <span class="text-purple-400 text-[11px] font-bold">Contextual Recall ✓</span>
+          </div>
+        </div>
+
+        <!-- SYSTEM 03: SnapClass AI Biometric Platform -->
+        <div onclick="openModal('snapclass')" class="md:col-span-5 glass-panel p-7 rounded-2xl cursor-pointer group relative overflow-hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono text-emerald-400 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20">
+              SYS_03 · BIOMETRICS & EDGE INFERENCE
+            </span>
+            <div class="flex items-center gap-1.5 text-xs font-mono text-gray-400 group-hover:text-emerald-400 transition-colors">
+              <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-2xl sm:text-3xl font-bold font-display text-white group-hover:text-emerald-300 transition-colors">
+              SnapClass AI
+            </h3>
+            <p class="text-sm font-mono text-gray-400">Dual-Modality Biometric Attendance Platform</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 font-mono text-xs">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE ENGINEERING PROBLEM</div>
+            <p class="text-gray-300 font-sans text-xs leading-relaxed">
+              Traditional card/QR check-ins suffer proxy fraud; cloud vision APIs introduce recurring SaaS cost and round-trip network latency.
+            </p>
+          </div>
+
+          <div class="space-y-2 font-mono text-xs text-gray-300">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE SHIP & INNOVATION</div>
+            <p class="text-gray-300 font-sans text-xs leading-relaxed">
+              128-dimensional facial embeddings (Dlib 68 points) cross-verified against Resemblyzer voice d-vector acoustic embeddings for multi-factor anti-spoofing verification.
+            </p>
+          </div>
+
+          <div class="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">OpenCV</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Dlib</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Resemblyzer</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Flask</span>
+            </div>
+            <span class="text-emerald-400 text-[11px] font-bold">Anti-Proxy Pipeline ✓</span>
+          </div>
+        </div>
+
+        <!-- SYSTEM 04: AdaIN Neural Style Transfer -->
+        <div onclick="openModal('adain')" class="md:col-span-7 glass-panel p-7 rounded-2xl cursor-pointer group relative overflow-hidden space-y-6">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono text-amber-400 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-400/20">
+              SYS_04 · GENERATIVE VISION & PYTORCH KERNELS
+            </span>
+            <div class="flex items-center gap-1.5 text-xs font-mono text-gray-400 group-hover:text-amber-400 transition-colors">
+              <span>INSPECT ARCHITECTURE</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-2xl sm:text-3xl font-bold font-display text-white group-hover:text-amber-300 transition-colors">
+              Neural Style Transfer (AdaIN)
+            </h3>
+            <p class="text-sm font-mono text-gray-400">Arbitrary Style Transfer with Symmetrical Inverted Decoder</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2 font-mono text-xs">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE ENGINEERING PROBLEM</div>
+            <p class="text-gray-300 font-sans text-xs leading-relaxed">
+              Iterative Gatys optimization takes hundreds of backprop steps per frame. Standard feedforward networks can only synthesize a single fixed style per model.
+            </p>
+          </div>
+
+          <div class="space-y-2 font-mono text-xs text-gray-300">
+            <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE SHIP & INNOVATION</div>
+            <p class="text-gray-300 font-sans text-xs leading-relaxed">
+              Aligns channel-wise mean and variance between content activations $x$ and style activations $y$ in a single feedforward pass: AdaIN(x, y) = $\sigma(y)\left(\frac{x-\mu(x)}{\sigma(x)}\right) + \mu(y)$ at ~42ms on GPU.
+            </p>
+          </div>
+
+          <div class="pt-2 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">PyTorch</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Torchvision</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">VGG-19</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">Flask</span>
+              <span class="px-2 py-0.5 rounded bg-white/5 text-gray-300 text-[10px]">CUDA</span>
+            </div>
+            <span class="text-amber-400 text-[11px] font-bold">~42ms Target GPU ✓</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 02: INTERACTIVE ARCHITECTURE LAB & TENSOR PIPELINES -->
+    <section id="architecture-lab" class="space-y-8 scroll-mt-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6">
+        <div class="space-y-2">
+          <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">// 02 DEEP TECHNICAL DEEP-DIVES</span>
+          <h2 class="text-3xl sm:text-5xl font-bold font-display text-white tracking-tight">Interactive Architecture Lab.</h2>
+        </div>
+        <p class="text-sm text-gray-400 max-w-md font-light leading-relaxed">
+          Walk through the exact tensor transformations, algorithmic complexity, and latency budgets of each deployed model.
+        </p>
+      </div>
+
+      <!-- Architecture Stage Box -->
+      <div class="glass-panel p-6 sm:p-8 rounded-2xl space-y-7 border border-white/10">
+        
+        <!-- Pipeline Switcher Tabs -->
+        <div class="flex flex-wrap gap-2 border-b border-white/10 pb-4">
+          <button onclick="switchArchTab('adain')" id="arch-tab-adain" class="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 transition-all">
+            AdaIN Forward Pass Pipeline
+          </button>
+          <button onclick="switchArchTab('reality')" id="arch-tab-reality" class="px-4 py-2 rounded-xl text-xs font-mono text-gray-400 border border-white/10 hover:text-white transition-all">
+            RealityDiff BoT-SORT Gate
+          </button>
+          <button onclick="switchArchTab('snapclass')" id="arch-tab-snapclass" class="px-4 py-2 rounded-xl text-xs font-mono text-gray-400 border border-white/10 hover:text-white transition-all">
+            SnapClass Dual-Biometrics
+          </button>
+        </div>
+
+        <!-- Arch View 1: AdaIN -->
+        <div id="arch-view-adain" class="space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <div class="lg:col-span-7 space-y-4">
+              <h3 class="text-xl font-bold font-display text-white">Adaptive Instance Normalization (AdaIN) Forward Flow</h3>
+              <p class="text-xs sm:text-sm text-gray-300 font-light leading-relaxed">
+                Rather than iterating through hundreds of gradient optimization passes on raw pixel tensors, AdaIN transforms channel statistics directly in feature space:
+              </p>
+
+              <!-- Formula Box -->
+              <div class="p-4 rounded-xl bg-black/70 border border-cyan-500/30 font-mono text-xs text-cyan-300 space-y-2">
+                <div class="font-bold text-sm">AdaIN(x, y) = σ(y) · [ (x - μ(x)) / σ(x) ] + μ(y)</div>
+                <div class="text-[11px] text-gray-400 leading-normal">
+                  Where: x ∈ ℝ^(C×H×W) is the content activation, y ∈ ℝ^(C×H×W) is the style activation.
+                  Channel-wise moments μ, σ are computed independently across spatial dims (H, W).
+                </div>
+              </div>
+
+              <!-- Interactive Style Alpha Slider Simulator -->
+              <div class="p-5 rounded-xl bg-white/5 border border-white/10 space-y-3 font-mono text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-gray-300 font-bold">INTERACTIVE ALPHA (α) STYLE STRENGTH:</span>
+                  <span id="alpha-val" class="text-cyan-400 font-bold text-sm">0.75</span>
+                </div>
+                <input id="alpha-slider" type="range" min="0" max="1" step="0.05" value="0.75" oninput="updateAlphaSim(this.value)" class="w-full accent-cyan-400 cursor-pointer">
+                
+                <div class="grid grid-cols-2 gap-3 pt-2 text-[11px]">
+                  <div class="p-2.5 rounded bg-black/40 border border-white/5">
+                    <span class="text-gray-500 block">CONTENT LOSS L_c:</span>
+                    <span id="sim-lc" class="text-white font-bold font-mono">0.142 (low preservation drift)</span>
+                  </div>
+                  <div class="p-2.5 rounded bg-black/40 border border-white/5">
+                    <span class="text-gray-500 block">STYLE LOSS L_s:</span>
+                    <span id="sim-ls" class="text-cyan-400 font-bold font-mono">0.829 (high texture transfer)</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Pipeline Breakdown Spec Sheet -->
+            <div class="lg:col-span-5 space-y-3 font-mono text-xs">
+              <div class="text-cyan-400 font-bold">// TENSOR STAGES & LATENCY BUDGET</div>
+              
+              <div class="space-y-2">
+                <div class="p-3 rounded-xl bg-black/50 border border-white/10 flex justify-between items-center">
+                  <div>
+                    <div class="text-white font-bold">1. VGG-19 Encoder</div>
+                    <div class="text-[10px] text-gray-400">Frozen up to relu4_1</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-cyan-400 font-bold">14.2 ms</div>
+                    <div class="text-[10px] text-gray-500">[1, 512, 64, 64]</div>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-black/50 border border-white/10 flex justify-between items-center">
+                  <div>
+                    <div class="text-white font-bold">2. AdaIN Channel Alignment</div>
+                    <div class="text-[10px] text-gray-400">μ &amp; σ Moments Normalization</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-cyan-400 font-bold">1.8 ms</div>
+                    <div class="text-[10px] text-gray-500">Channel statistics</div>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-black/50 border border-white/10 flex justify-between items-center">
+                  <div>
+                    <div class="text-white font-bold">3. Trained Symmetrical Decoder</div>
+                    <div class="text-[10px] text-gray-400">Reflection pad + Nearest Up</div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-cyan-400 font-bold">24.5 ms</div>
+                    <div class="text-[10px] text-gray-500">[1, 3, 512, 512]</div>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex justify-between items-center">
+                  <div class="text-white font-bold">TOTAL END-TO-END TARGET</div>
+                  <div class="text-cyan-300 font-bold text-sm">~40.5 ms (24.7 FPS)</div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Arch View 2: RealityDiff (Hidden initially) -->
+        <div id="arch-view-reality" class="space-y-6 hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-7 space-y-4">
+              <h3 class="text-xl font-bold font-display text-white">RealityDiff Spatial-Temporal Confirmation Gate</h3>
+              <p class="text-xs sm:text-sm text-gray-300 font-light leading-relaxed">
+                Raw detections fluctuate wildly between consecutive frames. RealityDiff passes candidate bounding boxes through a dual-threshold Kalman-filtered tracking bank:
+              </p>
+              <div class="p-4 rounded-xl bg-black/70 border border-emerald-500/30 font-mono text-xs text-emerald-300 space-y-2">
+                <div class="font-bold text-sm">Spatial Overlap IoU(B_t, B_(t-k)) &gt; τ_spatial ∧ Frame Persistence Δt &gt; 1.5s</div>
+                <div class="text-[11px] text-gray-400 leading-normal">
+                  If an object disappears or appears, it must survive the temporal buffer before triggering an alert, suppressing pedestrians or cars crossing the scene.
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-5 space-y-3 font-mono text-xs">
+              <div class="text-emerald-400 font-bold">// TRACKING STACK</div>
+              <div class="p-3 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                <div class="text-white font-bold">Detector: YOLO26 Tiny/Nano</div>
+                <div class="text-gray-400 text-[11px]">Under 12ms inference per frame on CUDA</div>
+              </div>
+              <div class="p-3 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                <div class="text-white font-bold">Tracker: BoT-SORT</div>
+                <div class="text-gray-400 text-[11px]">Camera Motion Compensation (CMC) + ReID embeddings</div>
+              </div>
+              <div class="p-3 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                <div class="text-white font-bold">Storage: Supabase PostgreSQL</div>
+                <div class="text-gray-400 text-[11px]">Real-time state logs &amp; snapshot storage</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arch View 3: SnapClass (Hidden initially) -->
+        <div id="arch-view-snapclass" class="space-y-6 hidden">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-7 space-y-4">
+              <h3 class="text-xl font-bold font-display text-white">SnapClass Dual Biometric Identity Verification</h3>
+              <p class="text-xs sm:text-sm text-gray-300 font-light leading-relaxed">
+                Prevents photo/video replay spoofing by requiring concurrent facial Euclidean alignment with voice harmonic d-vector distance matching:
+              </p>
+              <div class="p-4 rounded-xl bg-black/70 border border-purple-500/30 font-mono text-xs text-purple-300 space-y-2">
+                <div class="font-bold text-sm">Decision = [ ‖v_face - v_enrolled‖₂ &lt; 0.60 ] ∧ [ cos(θ_voice) &gt; 0.78 ]</div>
+                <div class="text-[11px] text-gray-400 leading-normal">
+                  A photo held up to the camera fails the acoustic voice embedding match; a recorded voice fails the 68-point dynamic facial landmark motion check.
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-5 space-y-3 font-mono text-xs">
+              <div class="text-purple-400 font-bold">// ACCURACY & HARDENING</div>
+              <div class="p-3 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                <div class="text-white font-bold">Face Representation: 128-D Vector</div>
+                <div class="text-gray-400 text-[11px]">Dlib affine-aligned ResNet-34 backbone</div>
+              </div>
+              <div class="p-3 rounded-xl bg-black/50 border border-white/10 space-y-1">
+                <div class="text-white font-bold">Voice Model: Resemblyzer d-vector</div>
+                <div class="text-gray-400 text-[11px]">GE2E (Generalized End-to-End) loss embeddings</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 03: AETHER AI DIGITAL TWIN (LIVE CHAT & VOICE HUD) -->
+    <section id="digital-twin" class="space-y-6 scroll-mt-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6">
+        <div class="space-y-2">
+          <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">// 03 CONVERSATIONAL TWIN</span>
+          <h2 class="text-3xl sm:text-5xl font-bold font-display text-white tracking-tight">AETHER AI Digital Twin.</h2>
+        </div>
+        <p class="text-sm text-gray-400 max-w-md font-light leading-relaxed">
+          Ask AETHER technical questions about Riyanshu's shipped PyTorch pipelines, 500+ solved LeetCode algorithms, university coursework, or recruiter inquiries.
+        </p>
+      </div>
+
+      <div class="glass-panel rounded-2xl border border-white/10 overflow-hidden flex flex-col h-[540px]">
+        
+        <!-- Chat Console Header -->
+        <div class="p-4 bg-black/60 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center font-mono font-bold text-cyan-300 text-xs">
+              AI
+            </div>
+            <div>
+              <div class="text-sm font-bold text-white font-display flex items-center gap-2">
+                AETHER // Riyanshu's Digital Twin
+                <span class="text-[9px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/30">ONLINE</span>
+              </div>
+              <div class="text-[10px] font-mono text-gray-400">
+                Grounding: PyTorch · OpenCV · 500+ LeetCode/GFG · Graphic Era BCA 2027
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden sm:flex items-center gap-2 text-[11px] font-mono text-gray-400">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span>NEURAL RETRIEVAL ACTIVE</span>
+          </div>
+        </div>
+
+        <!-- Chat Messages Container -->
+        <div id="chat-stream" class="flex-1 p-5 sm:p-6 overflow-y-auto space-y-4 font-mono text-xs sm:text-sm">
+          <!-- Default AI Greeting -->
+          <div class="flex gap-3 max-w-2xl">
+            <div class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 text-xs font-bold font-mono">
+              AI
+            </div>
+            <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-gray-200 leading-relaxed font-sans text-xs sm:text-sm">
+              Hello! I am <strong class="text-white">AETHER</strong>, the AI Digital Twin of Riyanshu Kandwal. I can walk you through the math behind my <strong class="text-cyan-300">AdaIN style transfer</strong>, explain my <strong class="text-emerald-300">500+ solved algorithmic problems</strong> in Java, or share details about my academic background at Graphic Era University. What would you like to discuss?
+            </div>
+          </div>
+        </div>
+
+        <!-- Suggested Prompt Chips -->
+        <div class="px-4 py-2.5 bg-black/30 border-t border-white/5 flex gap-2 overflow-x-auto text-[11px] font-mono">
+          <button onclick="sendQuickPrompt('How does your AdaIN Neural Style Transfer architecture work?')" class="px-3 py-1 rounded-full bg-white/5 hover:bg-cyan-500/15 text-gray-300 hover:text-cyan-300 border border-white/10 whitespace-nowrap transition-colors">
+            AdaIN Architecture?
+          </button>
+          <button onclick="sendQuickPrompt('How did you solve 500+ DSA problems on LeetCode & GFG?')" class="px-3 py-1 rounded-full bg-white/5 hover:bg-emerald-500/15 text-gray-300 hover:text-emerald-300 border border-white/10 whitespace-nowrap transition-colors">
+            500+ DSA Problems?
+          </button>
+          <button onclick="sendQuickPrompt('What is your tech stack and degree background?')" class="px-3 py-1 rounded-full bg-white/5 hover:bg-purple-500/15 text-gray-300 hover:text-purple-300 border border-white/10 whitespace-nowrap transition-colors">
+            Background & Degree?
+          </button>
+          <button onclick="sendQuickPrompt('How can recruiters contact you for AI/ML roles?')" class="px-3 py-1 rounded-full bg-white/5 hover:bg-amber-500/15 text-gray-300 hover:text-amber-300 border border-white/10 whitespace-nowrap transition-colors">
+            Hiring & Contact?
+          </button>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form onsubmit="handleChatSubmit(event)" class="p-3 bg-black/60 border-t border-white/10 flex gap-2">
+          <input
+            id="chat-input"
+            type="text"
+            placeholder="Ask AETHER about neural architectures, LeetCode algorithms, or background..."
+            class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white focus:outline-none focus:border-cyan-400 transition-colors font-mono"
+          />
+          <button type="submit" id="chat-submit-btn" class="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-semibold text-xs font-mono transition-all flex items-center gap-1.5 shadow-lg shadow-cyan-500/20">
+            <span>TRANSMIT</span>
+            <i data-lucide="send" class="w-3.5 h-3.5"></i>
+          </button>
+        </form>
+
+      </div>
+    </section>
+
+    <!-- SECTION 04: 500+ DSA & ALGORITHMIC FOUNDATION -->
+    <section id="algorithms" class="space-y-8 scroll-mt-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6">
+        <div class="space-y-2">
+          <span class="text-xs font-mono uppercase tracking-widest text-emerald-400">// 04 COMPETITIVE PROBLEM SOLVING</span>
+          <h2 class="text-3xl sm:text-5xl font-bold font-display text-white tracking-tight">500+ Algorithmic Mastery.</h2>
+        </div>
+        <p class="text-sm text-gray-400 max-w-md font-light leading-relaxed">
+          AI engineering requires rigorous algorithmic foundations: cache locality, computational complexity, two-pointer bounds, graph traversals, and dynamic programming.
+        </p>
+      </div>
+
+      <div class="glass-panel p-6 sm:p-8 rounded-2xl space-y-7 border border-white/10">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl overflow-hidden border border-emerald-400/40 shrink-0 hidden sm:block shadow-lg">
+              <img src="/riyanshu.png" alt="Riyanshu Kandwal" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
+            </div>
+            <div class="space-y-1">
+              <div class="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                <span>VERIFIED PROFILES ACROSS PLATFORMS · 100% REAL STATS</span>
+              </div>
+              <h3 class="text-2xl font-bold font-display text-white">Consistent High-Discipline Problem Solving</h3>
+              <p class="text-xs text-gray-400 font-light">
+                Primary language: <span class="text-white font-medium">Java</span>. Secondary: <span class="text-white font-medium">Python</span>. Deep focus on asymptotic optimization (<span class="text-emerald-300 font-mono">O(N)</span> vs <span class="text-red-400 font-mono">O(N²)</span>).
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <a href="https://leetcode.com/u/Riyanshu07" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-black/60 border border-amber-400/30 hover:border-amber-400 text-xs font-mono text-white flex items-center gap-2 transition-all group">
+              <span class="text-amber-400 font-bold">LeetCode</span>
+              <span class="text-gray-300 group-hover:text-white">@Riyanshu07 ↗</span>
+            </a>
+            <a href="https://www.geeksforgeeks.org/user/riyanshu07" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-black/60 border border-emerald-400/30 hover:border-emerald-400 text-xs font-mono text-white flex items-center gap-2 transition-all group">
+              <span class="text-emerald-400 font-bold">GeeksforGeeks</span>
+              <span class="text-gray-300 group-hover:text-white">@riyanshu07 ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Authenticity Confirmation Ribbon -->
+        <div class="p-3 rounded-xl bg-black/40 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono">
+          <div class="flex items-center gap-2 text-gray-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>VERIFIED SUBMISSION LOG: Grounded in active @Riyanshu07 &amp; @riyanshu07 profiles</span>
+          </div>
+          <div class="text-[11px] text-emerald-400 font-bold">
+            Total Solved: 500+ Algorithms
+          </div>
+        </div>
+
+        <!-- Topic Mastery Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 font-mono text-xs">
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+            <div class="flex justify-between text-gray-300">
+              <span>Arrays &amp; Two Pointers</span>
+              <span class="text-cyan-400 font-bold">160+</span>
+            </div>
+            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-cyan-400 h-full rounded-full" style="width: 88%"></div>
+            </div>
+            <span class="text-[10px] text-gray-500 block">Sliding Window · Binary Search</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+            <div class="flex justify-between text-gray-300">
+              <span>Trees &amp; BST</span>
+              <span class="text-emerald-400 font-bold">95+</span>
+            </div>
+            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-emerald-400 h-full rounded-full" style="width: 80%"></div>
+            </div>
+            <span class="text-[10px] text-gray-500 block">DFS / BFS · LCA · Segment Trees</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+            <div class="flex justify-between text-gray-300">
+              <span>Dynamic Programming</span>
+              <span class="text-purple-400 font-bold">85+</span>
+            </div>
+            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-purple-400 h-full rounded-full" style="width: 74%"></div>
+            </div>
+            <span class="text-[10px] text-gray-500 block">Memoization · Tabulation · Knapsack</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+            <div class="flex justify-between text-gray-300">
+              <span>Graph Algorithms</span>
+              <span class="text-amber-400 font-bold">75+</span>
+            </div>
+            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-amber-400 h-full rounded-full" style="width: 70%"></div>
+            </div>
+            <span class="text-[10px] text-gray-500 block">Dijkstra · Topo Sort · Disjoint Set</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+            <div class="flex justify-between text-gray-300">
+              <span>Greedy &amp; Heaps</span>
+              <span class="text-pink-400 font-bold">85+</span>
+            </div>
+            <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-pink-400 h-full rounded-full" style="width: 76%"></div>
+            </div>
+            <span class="text-[10px] text-gray-500 block">Priority Queues · Interval Merging</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 05: ABOUT & ENGINEERING PHILOSOPHY -->
+    <section id="about" class="space-y-12 scroll-mt-24">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/10 pb-6">
+        <div class="space-y-2">
+          <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">// 05 PHILOSOPHY & PRINCIPLES</span>
+          <h2 class="text-3xl sm:text-5xl font-bold font-display text-white tracking-tight">The Engineering Mindset.</h2>
+        </div>
+        <p class="text-sm text-gray-400 max-w-md font-light leading-relaxed">
+          I don't just want to understand AI. I want to build working, robust systems with it.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Authentic Executive Portrait Card -->
+          <div class="relative glass-panel rounded-2xl p-4 border border-white/15 overflow-hidden group shadow-2xl shadow-black/80">
+            <div class="aspect-[3/4] w-full rounded-xl overflow-hidden relative bg-black/60">
+              <img 
+                src="/riyanshu.png" 
+                alt="Riyanshu Kandwal - AI/ML Systems Engineer" 
+                class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" 
+                referrerPolicy="no-referrer" 
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent"></div>
+              
+              <!-- Floating status badge -->
+              <div class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-emerald-400/40 text-[10px] font-mono text-emerald-300 flex items-center gap-1.5 shadow-lg">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>VERIFIED IDENTITY</span>
+              </div>
+
+              <!-- Lower overlay info -->
+              <div class="absolute bottom-4 left-4 right-4 space-y-1">
+                <h4 class="text-2xl font-bold font-display text-white tracking-tight">Riyanshu Kandwal</h4>
+                <div class="text-xs font-mono text-cyan-300 flex items-center gap-2">
+                  <span>AI/ML Systems Engineer</span>
+                  <span>·</span>
+                  <span class="text-gray-300">Java &amp; Python</span>
+                </div>
+                <div class="text-[11px] font-mono text-gray-400 pt-0.5">
+                  BCA @ Graphic Era Univ ('27) · 500+ DSA
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile Quick Link Strip -->
+            <div class="mt-3 pt-3 border-t border-white/10 grid grid-cols-3 gap-2 font-mono text-[11px] text-center">
+              <a href="https://leetcode.com/u/Riyanshu07" target="_blank" rel="noopener noreferrer" class="py-1.5 px-2 rounded-lg bg-black/40 hover:bg-amber-500/15 text-amber-300 border border-amber-400/20 transition-colors">
+                LeetCode
+              </a>
+              <a href="https://www.geeksforgeeks.org/user/riyanshu07" target="_blank" rel="noopener noreferrer" class="py-1.5 px-2 rounded-lg bg-black/40 hover:bg-emerald-500/15 text-emerald-300 border border-emerald-400/20 transition-colors">
+                GFG
+              </a>
+              <a href="https://github.com/Riyanshu-07" target="_blank" rel="noopener noreferrer" class="py-1.5 px-2 rounded-lg bg-black/40 hover:bg-white/10 text-gray-200 border border-white/10 transition-colors">
+                GitHub
+              </a>
+            </div>
+          </div>
+
+          <h3 class="text-2xl sm:text-3xl font-bold font-display text-white leading-snug">
+            "A model that only runs in a notebook is an unfinished thought."
+          </h3>
+          <p class="text-sm text-gray-300 font-light leading-relaxed">
+            I'm an AI/ML Systems Engineer focused on building systems that survive production realities: out-of-distribution input noise, edge latency budgets, memory leaks, and intuitive user interfaces.
+          </p>
+
+          <!-- Degree & Cert Snapshot -->
+          <div class="p-5 rounded-2xl glass-panel border border-white/10 space-y-3 font-mono text-xs">
+            <div class="text-cyan-400 font-bold">// FORMAL BACKGROUND &amp; CREDENTIALS</div>
+            <div class="border-b border-white/5 pb-2">
+              <div class="text-white font-bold">Bachelor of Computer Applications (BCA)</div>
+              <div class="text-gray-400">Graphic Era (Deemed to be University) · 2024–2027</div>
+            </div>
+            <div>
+              <div class="text-white font-bold">Prime (AI / Machine Learning)</div>
+              <div class="text-gray-400">Apna College · Credential: <span class="text-cyan-300">6a689235ff15cede5e0b6900</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-5">
+          <div class="p-6 rounded-2xl glass-panel border border-white/10 flex gap-5 items-start">
+            <div class="text-purple-400 font-mono text-xl font-bold">01</div>
+            <div class="space-y-1.5">
+              <h4 class="text-base font-bold text-white">Build before you claim.</h4>
+              <p class="text-xs text-gray-400 leading-relaxed font-light">
+                A working, measurable architecture running live with benchmarked frames-per-second is infinitely more valuable than a laundry list of buzzwords on a slide.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl glass-panel border border-white/10 flex gap-5 items-start">
+            <div class="text-cyan-400 font-mono text-xl font-bold">02</div>
+            <div class="space-y-1.5">
+              <h4 class="text-base font-bold text-white">Understand the system, not just the loss curve.</h4>
+              <p class="text-xs text-gray-400 leading-relaxed font-light">
+                Machine learning in production is 10% weights and 90% data pipes, serialization, memory footprints, API latency, and handling graceful edge-case failures.
+              </p>
+            </div>
+          </div>
+
+          <div class="p-6 rounded-2xl glass-panel border border-white/10 flex gap-5 items-start">
+            <div class="text-emerald-400 font-mono text-xl font-bold">03</div>
+            <div class="space-y-1.5">
+              <h4 class="text-base font-bold text-white">Make complexity transparent and actionable.</h4>
+              <p class="text-xs text-gray-400 leading-relaxed font-light">
+                Great engineering demystifies complex neural mathematics into clean, explainable, and trustworthy software experiences.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Skills Pill Strip -->
+      <div class="pt-4 border-t border-white/10">
+        <div class="text-xs font-mono text-gray-500 mb-4">// VERIFIED TECHNICAL STACK</div>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Python</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-cyan-300">PyTorch 2.x</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Torchvision</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-emerald-300">OpenCV</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Dlib</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">YOLO26</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-purple-300">BoT-SORT</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-amber-300">RAG &amp; Vector Stores</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">FastAPI</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Flask</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Streamlit</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-cyan-300">Java (DSA 500+)</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Three.js</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Supabase / PostgreSQL</span>
+          <span class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-gray-300">Git / GitHub CI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 06: CONTACT & DIRECT OUTREACH -->
+    <section id="contact" class="text-center py-16 space-y-7 scroll-mt-24">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-400/20 text-xs font-mono text-emerald-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>OPEN FOR ROLES · INTERNSHIPS · HIGH-IMPACT COLLABORATION</span>
+      </div>
+
+      <h2 class="text-4xl sm:text-6xl font-black font-display text-white tracking-tight max-w-2xl mx-auto leading-tight">
+        Have an AI problem worth building?
+      </h2>
+
+      <p class="text-gray-400 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed">
+        Let's turn the research concept into a working system — from mathematical formulation to model weights, low-latency serving, and clean frontend telemetry.
+      </p>
+
+      <div class="flex flex-wrap justify-center items-center gap-3 pt-4">
+        <a href="mailto:riyanshukandwal07@gmail.com" class="px-6 py-3.5 rounded-xl bg-white hover:bg-cyan-400 text-black font-bold text-xs sm:text-sm font-mono transition-all flex items-center gap-2 shadow-xl shadow-white/5">
+          <span>EMAIL RIYANSHU DIRECTLY</span>
+          <i data-lucide="mail" class="w-4 h-4"></i>
+        </a>
+        <button onclick="copyEmail()" class="px-5 py-3.5 rounded-xl glass-panel text-gray-300 hover:text-white text-xs sm:text-sm font-mono flex items-center gap-2">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span>COPY EMAIL</span>
+        </button>
+        <button onclick="openRecruiterModal()" class="px-5 py-3.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 text-xs sm:text-sm font-mono flex items-center gap-2">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          <span>RECRUITER PACK</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/10 py-8 bg-[#050608]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-500">
+      <div class="flex items-center gap-2">
+        <span>© 2026 Riyanshu Kandwal. Built around systems, not slides.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/Riyanshu-07" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub ↗</a>
+        <a href="https://www.linkedin.com/in/riyanshu-kandwal-555433309" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LinkedIn ↗</a>
+        <a href="https://leetcode.com/u/Riyanshu07" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">LeetCode ↗</a>
+        <a href="https://www.geeksforgeeks.org/user/riyanshu07" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GeeksforGeeks ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- RECRUITER EXECUTIVE DOSSIER MODAL -->
+  <div id="recruiter-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 sm:p-8 space-y-6 border border-white/15 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-start justify-between border-b border-white/10 pb-4">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-xl overflow-hidden border border-white/20 shrink-0 shadow-lg shadow-black/50">
+            <img src="/riyanshu.png" alt="Riyanshu Kandwal" class="w-full h-full object-cover object-top" referrerPolicy="no-referrer" />
+          </div>
+          <div>
+            <span class="text-xs font-mono text-emerald-400 font-bold">// EXECUTIVE CANDIDATE DOSSIER</span>
+            <h3 class="text-2xl font-bold font-display text-white">Riyanshu Kandwal</h3>
+            <p class="text-xs text-gray-400 font-mono">AI/ML Systems Engineer · Expected Graduation 2027 · Dehradun, India</p>
+          </div>
+        </div>
+        <button onclick="closeRecruiterModal()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 font-mono text-xs">
+        <div class="p-4 rounded-xl bg-black/40 border border-white/5 space-y-2">
+          <div class="text-gray-400 font-bold">// ATS COPYABLE SUMMARY:</div>
+          <p id="ats-text" class="text-gray-300 font-sans text-xs leading-relaxed">
+            Riyanshu Kandwal is an AI/Machine Learning Engineer specializing in Computer Vision (PyTorch, YOLO, OpenCV, Dlib), Generative AI (AdaIN Neural Style Transfer, DCGANs), and Multimodal RAG architectures. Completed Prime AI/ML certification from Apna College (Credential ID: 6a689235ff15cede5e0b6900), currently pursuing BCA at Graphic Era University (2027). Demonstrated strong algorithmic fundamentals with 500+ solved problems across LeetCode (@Riyanshu07) and GeeksforGeeks (@riyanshu07) in Java and Python. Shipped open-source systems with edge-optimized inference pipelines under 45ms.
+          </p>
+          <button onclick="copyATS()" class="mt-2 px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[11px] font-bold flex items-center gap-1.5">
+            <i data-lucide="copy" class="w-3 h-3"></i>
+            <span id="copy-ats-btn">COPY SUMMARY BLURB</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1">
+            <span class="text-gray-500 block text-[10px]">NOTICE PERIOD:</span>
+            <span class="text-emerald-400 font-bold">Immediate / Internship / Full-time 2027</span>
+          </div>
+          <div class="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1">
+            <span class="text-gray-500 block text-[10px]">LOCATION:</span>
+            <span class="text-white font-bold">Dehradun, India (Open to Remote / Relocation)</span>
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-wrap gap-2">
+          <a href="mailto:riyanshukandwal07@gmail.com" class="flex-1 py-2.5 rounded-xl bg-white text-black font-bold text-center text-xs hover:bg-cyan-400 transition-colors">
+            Direct Email Offer / Discussion
+          </a>
+          <a href="https://www.linkedin.com/in/riyanshu-kandwal-555433309" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-white/10 text-white text-center text-xs hover:bg-white/20 transition-colors">
+            LinkedIn Profile
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM DETAILS MODAL (FOR DEEP DIVES) -->
+  <div id="system-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl hidden items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-2xl rounded-2xl p-6 sm:p-8 space-y-6 border border-white/15 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-start justify-between border-b border-white/10 pb-4">
+        <div>
+          <span id="modal-type" class="text-xs font-mono text-cyan-400 font-bold uppercase"></span>
+          <h3 id="modal-title" class="text-2xl font-bold font-display text-white"></h3>
+        </div>
+        <button onclick="closeModal()" class="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 font-mono text-xs">
+        <div class="space-y-1">
+          <div class="text-gray-500 uppercase tracking-wider text-[10px]">// THE CORE PROBLEM</div>
+          <p id="modal-problem" class="text-gray-300 font-sans text-xs sm:text-sm leading-relaxed"></p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="text-gray-500 uppercase tracking-wider text-[10px]">// SOLUTION & ARCHITECTURE</div>
+          <ul id="modal-solution" class="list-disc list-inside space-y-1 text-gray-300 font-sans text-xs sm:text-sm"></ul>
+        </div>
+
+        <div class="space-y-1">
+          <div class="text-gray-500 uppercase tracking-wider text-[10px]">// MEASURABLE IMPACT</div>
+          <p id="modal-impact" class="text-cyan-300 font-sans text-xs sm:text-sm leading-relaxed"></p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="text-gray-500 uppercase tracking-wider text-[10px]">// TECH STACK</div>
+          <p id="modal-tech" class="text-gray-400"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-xl bg-white text-black font-mono font-bold text-xs shadow-2xl flex items-center gap-2 translate-y-20 opacity-0 transition-all duration-300">
+    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i>
+    <span id="toast-msg">COPIED TO CLIPBOARD ✓</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    lucide.createIcons();
+
+    // -------------------------------------------------------------
+    // 1. THREE.JS 3D NEURAL FIELD ENGINE (Dynamic & Responsive)
+    // -------------------------------------------------------------
+    let scene, camera, renderer, particles, linesGeometry, linesMesh;
+    let particlePositions, particleVelocities;
+    const particleCount = 110;
+    const maxDistance = 140;
+    let visualMode = 0; // 0 = Synapse Graph, 1 = Latent Ring, 2 = Tensor Matrix
+    let mouseX = 0, mouseY = 0;
+
+    function initThree() {
+      const container = document.getElementById('three-canvas-container');
+      if (!container) return;
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+      camera.position.z = 320;
+
+      renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Create Particles
+      const geometry = new THREE.BufferGeometry();
+      particlePositions = new Float32Array(particleCount * 3);
+      particleVelocities = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        particlePositions[i * 3] = (Math.random() - 0.5) * 500;
+        particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 350;
+        particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+
+        particleVelocities.push({
+          x: (Math.random() - 0.5) * 0.45,
+          y: (Math.random() - 0.5) * 0.45,
+          z: (Math.random() - 0.5) * 0.25
+        });
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+      const pMaterial = new THREE.PointsMaterial({
+        color: 0x22d3ee,
+        size: 3.5,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending
+      });
+
+      particles = new THREE.Points(geometry, pMaterial);
+      scene.add(particles);
+
+      // Synapse Connections Lines
+      const linePositions = new Float32Array(particleCount * particleCount * 3);
+      linesGeometry = new THREE.BufferGeometry();
+      linesGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+
+      const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x7c3aed,
+        transparent: true,
+        opacity: 0.22,
+        blending: THREE.AdditiveBlending
+      });
+
+      linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+      scene.add(linesMesh);
+
+      window.addEventListener('resize', onWindowResize);
+      window.addEventListener('mousemove', onMouseMove);
+      animateThree();
+    }
+
+    function onWindowResize() {
+      if (!camera || !renderer) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function onMouseMove(e) {
+      mouseX = (e.clientX - window.innerWidth / 2) * 0.1;
+      mouseY = (e.clientY - window.innerHeight / 2) * 0.1;
+    }
+
+    function toggleVisualMode() {
+      playChime(520);
+      visualMode = (visualMode + 1) % 3;
+      const modes = ['SYNAPSE 3D', 'LATENT RING', 'TENSOR FLOW'];
+      document.getElementById('viz-label').textContent = modes[visualMode];
+
+      if (visualMode === 0) {
+        particles.material.color.setHex(0x22d3ee);
+        linesMesh.material.color.setHex(0x7c3aed);
+      } else if (visualMode === 1) {
+        particles.material.color.setHex(0x4ade80);
+        linesMesh.material.color.setHex(0x22d3ee);
+      } else {
+        particles.material.color.setHex(0xa855f7);
+        linesMesh.material.color.setHex(0xf59e0b);
+      }
+    }
+
+    function animateThree() {
+      requestAnimationFrame(animateThree);
+
+      // Camera subtle drift
+      camera.position.x += (mouseX - camera.position.x) * 0.03;
+      camera.position.y += (-mouseY - camera.position.y) * 0.03;
+      camera.lookAt(scene.position);
+
+      const positions = particles.geometry.attributes.position.array;
+      const linePositions = linesGeometry.attributes.position.array;
+      let lineIndex = 0;
+
+      for (let i = 0; i < particleCount; i++) {
+        // Mode kinematics
+        if (visualMode === 1) {
+          // Latent Ring Vortex
+          const angle = Date.now() * 0.0005 + (i / particleCount) * Math.PI * 2;
+          const radius = 180 + Math.sin(Date.now() * 0.001 + i) * 30;
+          positions[i * 3] += (Math.cos(angle) * radius - positions[i * 3]) * 0.03;
+          positions[i * 3 + 1] += (Math.sin(angle) * radius - positions[i * 3 + 1]) * 0.03;
+        } else {
+          positions[i * 3] += particleVelocities[i].x;
+          positions[i * 3 + 1] += particleVelocities[i].y;
+          positions[i * 3 + 2] += particleVelocities[i].z;
+
+          // Boundary bounce
+          if (positions[i * 3] < -250 || positions[i * 3] > 250) particleVelocities[i].x *= -1;
+          if (positions[i * 3 + 1] < -180 || positions[i * 3 + 1] > 180) particleVelocities[i].y *= -1;
+          if (positions[i * 3 + 2] < -120 || positions[i * 3 + 2] > 120) particleVelocities[i].z *= -1;
+        }
+
+        // Draw connections
+        for (let j = i + 1; j < particleCount; j++) {
+          const dx = positions[i * 3] - positions[j * 3];
+          const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+          const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+          if (dist < maxDistance) {
+            linePositions[lineIndex++] = positions[i * 3];
+            linePositions[lineIndex++] = positions[i * 3 + 1];
+            linePositions[lineIndex++] = positions[i * 3 + 2];
+
+            linePositions[lineIndex++] = positions[j * 3];
+            linePositions[lineIndex++] = positions[j * 3 + 1];
+            linePositions[lineIndex++] = positions[j * 3 + 2];
+          }
+        }
+      }
+
+      linesGeometry.setDrawRange(0, lineIndex / 3);
+      linesGeometry.attributes.position.needsUpdate = true;
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
+    // -------------------------------------------------------------
+    // 2. AUDIO SYNTHESIZER FEEDBACK (Web Audio API)
+    // -------------------------------------------------------------
+    let audioCtx = null;
+    let audioEnabled = true;
+
+    function playChime(freq = 440) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 1.5, audioCtx.currentTime + 0.12);
+
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.14);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('sound-btn');
+      btn.innerHTML = audioEnabled ? '<i data-lucide="volume-2" class="w-4 h-4"></i>' : '<i data-lucide="volume-x" class="w-4 h-4 text-red-400"></i>';
+      lucide.createIcons();
+      if (audioEnabled) playChime(660);
+    }
+
+    // -------------------------------------------------------------
+    // 3. INTERACTIVE TERMINAL SIMULATOR
+    // -------------------------------------------------------------
+    function runTerminalCmd(cmd) {
+      playChime(480);
+      const term = document.getElementById('terminal-body');
+      const time = new Date().toLocaleTimeString();
+
+      if (cmd === 'clear') {
+        term.innerHTML = `<div class="text-gray-500">// Terminal cleared [${time}]</div>`;
+        return;
+      }
+
+      let res = '';
+      if (cmd === 'eval realitydiff') {
+        res = `
+          <div class="text-cyan-400 pt-1">$ eval realitydiff --mode=benchmark</div>
+          <div>[INFO] Loading YOLO26 weights into CUDA runtime...</div>
+          <div>[INFO] Tracking bank: BoT-SORT (CMC enabled)</div>
+          <div>[BENCH] Latency: 11.4 ms/frame | Spatial IoU threshold: 0.65</div>
+          <div>[RESULT] 98.4% temporal persistence accuracy on test stream.</div>
+        `;
+      } else if (cmd === 'cat adain_formula') {
+        res = `
+          <div class="text-purple-400 pt-1">$ cat models/adain.py</div>
+          <div class="text-gray-300">
+            def adain(content_feat, style_feat):<br>
+            &nbsp;&nbsp;c_mean, c_std = calc_mean_std(content_feat)<br>
+            &nbsp;&nbsp;s_mean, s_std = calc_mean_std(style_feat)<br>
+            &nbsp;&nbsp;normalized = (content_feat - c_mean) / c_std<br>
+            &nbsp;&nbsp;return normalized * s_std + s_mean<br>
+          </div>
+        `;
+      } else if (cmd === 'dsa stats') {
+        res = `
+          <div class="text-emerald-400 pt-1">$ curl api.leetcode.com/user/Riyanshu07</div>
+          <div>[DATA] Total Solved: 500+ across LeetCode &amp; GeeksforGeeks</div>
+          <div>[TOPICS] Arrays (160+), Trees (95+), DP (85+), Graphs (75+), Heaps (85+)</div>
+          <div>[RUNTIME] Preferred submission complexity: O(N log N) or O(N)</div>
+        `;
+      } else if (cmd === 'whoami') {
+        res = `
+          <div class="text-amber-400 pt-1">$ whoami</div>
+          <div>[IDENTITY] Riyanshu Kandwal — AI/ML Systems Engineer</div>
+          <div>[ACADEMICS] BCA @ Graphic Era University, Dehradun (2024–2027)</div>
+          <div>[CERT] Prime AI/ML (Apna College) #6a689235ff15cede5e0b6900</div>
+          <div>[DSA] 500+ problems solved across LeetCode &amp; GeeksforGeeks</div>
+          <div>[SPECIALTIES] Real-Time Vision, PyTorch 2.x, Multimodal RAG, Asymptotic Optimization</div>
+        `;
+      }
+
+      term.innerHTML += res;
+      term.scrollTop = term.scrollHeight;
+    }
+
+    // Hero Tab Switcher: Terminal vs Photo ID
+    function switchHeroTab(tab) {
+      playChime(520);
+      const termBtn = document.getElementById('hero-tab-term');
+      const photoBtn = document.getElementById('hero-tab-photo');
+      const termView = document.getElementById('hero-view-term');
+      const photoView = document.getElementById('hero-view-photo');
+
+      if (tab === 'term') {
+        termBtn.className = 'px-2.5 py-1 rounded-lg bg-white/10 text-white font-semibold transition-all';
+        photoBtn.className = 'px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition-all';
+        termView.classList.remove('hidden');
+        photoView.classList.add('hidden');
+      } else {
+        photoBtn.className = 'px-2.5 py-1 rounded-lg bg-white/10 text-white font-semibold transition-all';
+        termBtn.className = 'px-2.5 py-1 rounded-lg text-gray-400 hover:text-white transition-all';
+        photoView.classList.remove('hidden');
+        termView.classList.add('hidden');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 4. ARCHITECTURE PIPELINE TAB SWITCHER & ALPHA SIMULATOR
+    // -------------------------------------------------------------
+    function switchArchTab(tab) {
+      playChime(500);
+      ['adain', 'reality', 'snapclass'].forEach(t => {
+        const btn = document.getElementById(`arch-tab-${t}`);
+        const view = document.getElementById(`arch-view-${t}`);
+        if (t === tab) {
+          btn.className = "px-4 py-2 rounded-xl text-xs font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 transition-all";
+          view.classList.remove('hidden');
+        } else {
+          btn.className = "px-4 py-2 rounded-xl text-xs font-mono text-gray-400 border border-white/10 hover:text-white transition-all";
+          view.classList.add('hidden');
+        }
+      });
+    }
+
+    function updateAlphaSim(val) {
+      document.getElementById('alpha-val').textContent = val;
+      const alpha = parseFloat(val);
+      const lc = (0.05 + (1.0 - alpha) * 0.45).toFixed(3);
+      const ls = (0.05 + alpha * 0.95).toFixed(3);
+      document.getElementById('sim-lc').textContent = `${lc} (${alpha < 0.5 ? 'high' : 'low'} structure lock)`;
+      document.getElementById('sim-ls').textContent = `${ls} (${alpha > 0.5 ? 'high' : 'low'} texture transfer)`;
+    }
+
+    // -------------------------------------------------------------
+    // 5. AETHER DIGITAL TWIN CHAT ENGINE (Gemini API + Offline Fallback)
+    // -------------------------------------------------------------
+    async function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      await sendPrompt(text);
+    }
+
+    function sendQuickPrompt(promptText) {
+      playChime(600);
+      sendPrompt(promptText);
+    }
+
+    async function sendPrompt(text) {
+      const chatStream = document.getElementById('chat-stream');
+      
+      // Append user message
+      const userMsg = document.createElement('div');
+      userMsg.className = "flex gap-3 justify-end";
+      userMsg.innerHTML = `
+        <div class="p-3.5 rounded-2xl bg-cyan-500 text-black font-semibold text-xs sm:text-sm font-sans max-w-xl">
+          ${escapeHtml(text)}
+        </div>
+      `;
+      chatStream.appendChild(userMsg);
+
+      // Loading bubble
+      const loading = document.createElement('div');
+      loading.className = "flex gap-3 max-w-2xl text-gray-400 font-mono text-xs";
+      loading.innerHTML = `
+        <div class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 font-bold">AI</div>
+        <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span>AETHER querying neural weights...</span>
+        </div>
+      `;
+      chatStream.appendChild(loading);
+      chatStream.scrollTop = chatStream.scrollHeight;
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await response.json();
+        chatStream.removeChild(loading);
+        renderAIMessage(data.reply || "I am connected to Riyanshu's knowledge base. What specific technical architectural detail would you like to explore?");
+      } catch (err) {
+        chatStream.removeChild(loading);
+        // Robust intelligent fallback
+        const fallback = getOfflineFallback(text);
+        renderAIMessage(fallback);
+      }
+    }
+
+    function getOfflineFallback(query) {
+      const q = query.toLowerCase();
+      if (q.includes('adain') || q.includes('style')) {
+        return "In my AdaIN Neural Style Transfer project, I used a pre-trained VGG-19 encoder to extract feature activations up to relu4_1. AdaIN aligns channel statistics in a single pass without iterative backpropagation, synthesizing images in ~42ms on GPU with adjustable α style blending.";
+      }
+      if (q.includes('dsa') || q.includes('leetcode') || q.includes('problem')) {
+        return "I've solved 500+ Data Structures & Algorithms problems across LeetCode (@Riyanshu07) and GeeksforGeeks (@riyanshu07). My primary language is Java, focusing on optimal asymptotic time complexity across Arrays, Dynamic Programming, Binary Search, LCA on Trees, and Graph Traversal.";
+      }
+      if (q.includes('degree') || q.includes('graphic era') || q.includes('education') || q.includes('background')) {
+        return "I am currently pursuing my Bachelor of Computer Applications (BCA) at Graphic Era (Deemed to be University) in Dehradun, graduating in 2027. I also hold the Prime AI/ML verified credential from Apna College (ID: 6a689235ff15cede5e0b6900).";
+      }
+      if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('recruiter')) {
+        return "You can reach Riyanshu directly at riyanshukandwal07@gmail.com or via LinkedIn (linkedin.com/in/riyanshu-kandwal-555433309). He is actively open for AI/ML engineering roles, internships, and research collaborations!";
+      }
+      return "I am AETHER, Riyanshu Kandwal's AI Digital Twin. I specialize in Computer Vision, Deep Learning architectures (PyTorch), and rigorous 500+ algorithmic problem solving. Feel free to ask about any of my shipped projects or technical decisions!";
+    }
+
+    function renderAIMessage(text) {
+      playChime(640);
+      const chatStream = document.getElementById('chat-stream');
+      const aiMsg = document.createElement('div');
+      aiMsg.className = "flex gap-3 max-w-2xl";
+      aiMsg.innerHTML = `
+        <div class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 text-xs font-bold font-mono">AI</div>
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-gray-200 leading-relaxed font-sans text-xs sm:text-sm">
+          ${escapeHtml(text)}
+        </div>
+      `;
+      chatStream.appendChild(aiMsg);
+      chatStream.scrollTop = chatStream.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // -------------------------------------------------------------
+    // 6. SYSTEM DEEP-DIVE MODALS
+    // -------------------------------------------------------------
+    const systemDatabase = {
+      reality: {
+        title: "RealityDiff AI",
+        type: "SYS_01 · COMPUTER VISION & OBJECT TRACKING",
+        problem: "Object detectors can mistake temporary movement, camera shake, and bounding-box jitter for persistent additions or removals in physical environments.",
+        solution: [
+          "Integrated YOLO26 detection with BoT-SORT multi-object tracking to maintain continuous object tracklets across video frames.",
+          "Engineered a spatial-drift confirmation matrix and temporal confirmation buffer to separate transient occlusion from true persistent changes."
+        ],
+        impact: "Reduces false positive change triggers by over 90% in surveillance and inventory camera feeds through mathematical temporal consensus.",
+        tech: "Python · YOLO26 · BoT-SORT · OpenCV · Supabase · Streamlit · CUDA"
+      },
+      aether: {
+        title: "AETHER — 3D AI Digital Twin",
+        type: "SYS_02 · MULTIMODAL RAG & 3D INTERACTION",
+        problem: "Traditional LLM chat interfaces lack persistent cross-session memory, persona grounding, and spatial presence.",
+        solution: [
+          "Built a two-tiered memory architecture combining conversational short-term buffers with Sentence-Transformers semantic long-term retrieval in pgvector.",
+          "Connected the model to a reactive Three.js 3D avatar with Web Audio API sound synthesis."
+        ],
+        impact: "Enables context-aware recall across distinct browser sessions without exploding context tokens.",
+        tech: "Python · FastAPI · Sentence-Transformers · pgvector · Three.js · Web Audio API · Streamlit"
+      },
+      snapclass: {
+        title: "SnapClass AI Biometric Platform",
+        type: "SYS_03 · BIOMETRICS & ANTI-SPOOFING",
+        problem: "Single-factor attendance (QR codes or basic facial matching) is prone to buddy punching and photo-screen spoofing.",
+        solution: [
+          "Engineered dual-factor biometric verification combining 128-D facial landmark embeddings (Dlib 68-point) with Resemblyzer acoustic d-vector voice embeddings.",
+          "Integrated cloud-synced student portals and real-time attendance rollups."
+        ],
+        impact: "Sub-second verification per student with anti-spoofing verification running on local hardware.",
+        tech: "Python · OpenCV · Dlib · Resemblyzer · Flask · Supabase · HTML5 WebRTC"
+      },
+      adain: {
+        title: "Neural Style Transfer (AdaIN)",
+        type: "SYS_04 · GENERATIVE MODELS & PYTORCH",
+        problem: "Iterative optimization (Gatys) requires hundreds of backpropagation iterations per frame. Standard feedforward networks are restricted to a single fixed style.",
+        solution: [
+          "Implemented Adaptive Instance Normalization in PyTorch: normalizes content feature channel moments and scales them to style feature moments in a single forward pass.",
+          "Trained a symmetrical decoder network using inverted VGG-19 layers with reflection padding."
+        ],
+        impact: "Executes arbitrary style transfer in ~42ms on GPU, enabling real-time style interpolation via parameter α.",
+        tech: "Python · PyTorch · Torchvision · VGG-19 · CUDA · Flask"
+      }
+    };
+
+    function openModal(id) {
+      playChime(550);
+      const data = systemDatabase[id];
+      if (!data) return;
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-type').textContent = data.type;
+      document.getElementById('modal-problem').textContent = data.problem;
+      document.getElementById('modal-impact').textContent = data.impact;
+      document.getElementById('modal-tech').textContent = data.tech;
+      document.getElementById('modal-solution').innerHTML = data.solution.map(s => `<li>${s}</li>`).join('');
+      document.getElementById('system-modal').classList.remove('hidden');
+      document.getElementById('system-modal').classList.add('flex');
+    }
+
+    function closeModal() {
+      document.getElementById('system-modal').classList.add('hidden');
+      document.getElementById('system-modal').classList.remove('flex');
+    }
+
+    function openRecruiterModal() {
+      playChime(580);
+      document.getElementById('recruiter-modal').classList.remove('hidden');
+      document.getElementById('recruiter-modal').classList.add('flex');
+    }
+
+    function closeRecruiterModal() {
+      document.getElementById('recruiter-modal').classList.add('hidden');
+      document.getElementById('recruiter-modal').classList.remove('flex');
+    }
+
+    function copyATS() {
+      const text = document.getElementById('ats-text').textContent.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("ATS RESUME BLURB COPIED ✓");
+      });
+    }
+
+    function copyEmail() {
+      playChime(620);
+      navigator.clipboard.writeText("riyanshukandwal07@gmail.com").then(() => {
+        showToast("EMAIL COPIED: riyanshukandwal07@gmail.com");
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 2500);
+    }
+
+    // Modal click outside to close
+    window.addEventListener('click', (e) => {
+      const sysModal = document.getElementById('system-modal');
+      const recModal = document.getElementById('recruiter-modal');
+      if (e.target === sysModal) closeModal();
+      if (e.target === recModal) closeRecruiterModal();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+        closeRecruiterModal();
+      }
+    });
+
+    // Boot 3D Engine on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initThree();
+    });
+  </script>
+
+</body>
+</html>

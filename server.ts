@@ -2,43 +2,11 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
-import crypto from 'crypto';
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-
-// In-memory leaderboard state (seeded with competitive benchmarks)
-interface LeaderboardEntry {
-  id: string;
-  username: string;
-  score: number;
-  accuracy: number;
-  latencyMs: number;
-  badge: string;
-  timestamp: string;
-  verified: boolean;
-}
-
-let leaderboard: LeaderboardEntry[] = [
-  { id: '1', username: 'NeuroTitan', score: 9840, accuracy: 99.4, latencyMs: 12, badge: 'Neural Grandmaster', timestamp: '2026-09-15T12:00:00Z', verified: true },
-  { id: '2', username: 'AdaIN_Wizard', score: 9420, accuracy: 98.1, latencyMs: 16, badge: 'Vision Architect', timestamp: '2026-09-15T14:30:00Z', verified: true },
-  { id: '3', username: 'QuantumCoder', score: 9150, accuracy: 97.6, latencyMs: 14, badge: 'Agent Pioneer', timestamp: '2026-09-15T18:10:00Z', verified: true },
-  { id: '4', username: 'DeepMatrix', score: 8890, accuracy: 96.5, latencyMs: 21, badge: 'RAG Sentinel', timestamp: '2026-09-16T04:20:00Z', verified: true },
-  { id: '5', username: 'CyberSora', score: 8640, accuracy: 95.8, latencyMs: 19, badge: 'Physics Master', timestamp: '2026-09-16T07:15:00Z', verified: true },
-];
-
-// Anti-cheat verification secret key
-const ANTI_CHEAT_SECRET = process.env.ANTI_CHEAT_SECRET || 'riyanshu-anti-cheat-core-seed-2026';
-
-function verifyChecksum(data: { username: string; score: number; latencyMs: number; timestamp: number }, providedSignature: string): boolean {
-  const payload = `${data.username}:${data.score}:${data.latencyMs}:${data.timestamp}`;
-  const hmac = crypto.createHmac('sha256', ANTI_CHEAT_SECRET);
-  hmac.update(payload);
-  const expectedSignature = hmac.digest('hex');
-  return expectedSignature === providedSignature;
-}
 
 // Lazy Gemini API client
 let aiClient: GoogleGenAI | null = null;
@@ -63,96 +31,51 @@ function getAIClient(): GoogleGenAI | null {
 app.get('/api/health', (req: Request, res: Response) => {
   res.json({
     status: 'online',
-    system: 'Riyanshu.OS Neural Core',
+    system: 'Riyanshu.AI Neural Core',
     uptime: process.uptime(),
     geminiEnabled: Boolean(process.env.GEMINI_API_KEY),
     timestamp: new Date().toISOString()
   });
 });
 
-// 2. Leaderboard API
-app.get('/api/leaderboard', (req: Request, res: Response) => {
-  res.json({
-    success: true,
-    data: leaderboard.sort((a, b) => b.score - a.score).slice(0, 15),
-  });
-});
-
-app.post('/api/leaderboard', (req: Request, res: Response) => {
-  try {
-    const { username, score, accuracy, latencyMs, signature, timestamp, badge } = req.body;
-
-    if (!username || typeof score !== 'number') {
-      return res.status(400).json({ error: 'Invalid payload: username and score required' });
-    }
-
-    // Anti-cheat heuristics: check impossible ranges
-    if (score < 0 || score > 20000 || latencyMs < 1) {
-      return res.status(403).json({
-        error: 'Anti-cheat integrity alert: Physics/Time anomaly detected',
-        flagged: true
-      });
-    }
-
-    // Check signature if provided
-    let verified = false;
-    if (signature && timestamp) {
-      verified = verifyChecksum({ username, score, latencyMs, timestamp }, signature);
-    }
-
-    const newEntry: LeaderboardEntry = {
-      id: crypto.randomUUID(),
-      username: username.slice(0, 20),
-      score: Math.round(score),
-      accuracy: Math.min(100, Math.max(0, accuracy || 95)),
-      latencyMs: Math.max(5, Math.round(latencyMs || 20)),
-      badge: badge || 'Neural Operator',
-      timestamp: new Date().toISOString(),
-      verified: verified || true
-    };
-
-    leaderboard.push(newEntry);
-    leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 25);
-
-    res.json({ success: true, entry: newEntry, leaderboard: leaderboard.slice(0, 10) });
-  } catch (err: any) {
-    res.status(500).json({ error: 'Failed to process score submission', details: err?.message });
-  }
-});
-
-// 3. Challenge token generator for anti-cheat
-app.get('/api/challenge-token', (req: Request, res: Response) => {
-  const timestamp = Date.now();
-  const nonce = crypto.randomBytes(8).toString('hex');
-  res.json({ timestamp, nonce });
-});
-
-// 4. AETHER AI Digital Twin Chat
-const RIYANSHU_TWIN_PROMPT = `You are AETHER, the official 3D AI Digital Twin of Riyanshu Kandwal.
+// 2. AETHER AI Digital Twin Chat
+const RIYANSHU_TWIN_PROMPT = `You are AETHER, the official AI Digital Twin of Riyanshu Kandwal.
 You represent Riyanshu with high intellect, technical mastery, curiosity, and approachable warmth.
 Background of Riyanshu Kandwal:
-- Role: AI/ML Engineer | Generative AI | Computer Vision | Deep Learning.
-- Education: Bachelor of Computer Applications (BCA) at Graphic Era (Deemed to be University), Dehradun (Expected 2027).
-- Problem Solving: Solved 500+ Data Structures & Algorithms problems on LeetCode and GeeksforGeeks in Java & Python.
+- Role: AI / Machine Learning Engineer | Generative AI | Computer Vision | Deep Learning.
+- Education: Bachelor of Computer Applications (BCA) at Graphic Era (Deemed to be University), Dehradun (Expected Graduation: 2027).
+- Professional Certification: Prime (AI / Machine Learning) from Apna College (Credential ID: 6a689235ff15cede5e0b6900).
+- Problem Solving: Solved 500+ Data Structures & Algorithms problems with high discipline.
+  - Primary language: Java. Secondary: Python. Deep focus on asymptotic optimization (O(N) vs O(N²)).
+  - LeetCode: @Riyanshu07 (https://leetcode.com/u/Riyanshu07)
+  - GeeksforGeeks: @riyanshu07 (https://www.geeksforgeeks.org/user/riyanshu07)
+  - Algorithmic Breakdown:
+    * Arrays & Two Pointers: 160+ (Sliding Window, Binary Search)
+    * Trees & BST: 95+ (DFS / BFS, LCA, Segment Trees)
+    * Dynamic Programming: 85+ (Memoization, Tabulation, Knapsack)
+    * Graph Algorithms: 75+ (Dijkstra, Topo Sort, Disjoint Set)
+    * Greedy & Heaps: 85+ (Priority Queues, Interval Merging)
+- Verified Profiles:
+  - LinkedIn: https://www.linkedin.com/in/riyanshu-kandwal-555433309
+  - GitHub: https://github.com/Riyanshu-07
+  - Email: riyanshukandwal07@gmail.com
+  - Location: Dehradun, Uttarakhand, India
 - Key Projects:
-  1. AETHER (AI Digital Twin): Multimodal real-time 3D VRM digital avatar, RAG memory, speech-to-text, LLM, TTS, lip sync, Three.js, Web Audio API.
-  2. SmartFocus AI: Productivity prediction system with Random Forest, SHAP explainability, Flask, SQLite.
-  3. SnapClass AI: Computer vision facial recognition attendance platform with Resemblyzer voice recognition and QR enrollment.
-  4. Neural Style Transfer (AdaIN): Real-time style transfer using Adaptive Instance Normalization with VGG-19 and trained decoder in PyTorch.
-  5. Multi-Agent Research Assistant: Specialized AI agents (researcher, summarizer, fact-checker) coordinated via Groq & Agno.
-  6. Image Generation with GANs: PyTorch Generative Adversarial Network trained on custom dataset on Google Colab GPU.
-  7. Text Summarizer (NLP): Transformer-based summarization with Hugging Face T5 & FastAPI.
-  8. RealityDiff AI, AI Assistant (Ollama & Mistral), and CommitPulse (3D GitHub isometric visualizations).
-- Technical Stack: Python, PyTorch, Torchvision, Hugging Face, OpenCV, scikit-learn, FastAPI, Flask, Streamlit, Three.js, JavaScript/TypeScript.
-- Mindset: "I build the systems behind intelligent software — not slides about them. Learn, Build, Experiment, Improve."
+  1. RealityDiff AI: Persistent scene change detection coupling YOLO26 with BoT-SORT multi-object tracking and spatial-drift filtering to eliminate transient false positives.
+  2. AETHER (AI Digital Twin): Multimodal AI assistant integrating RAG, semantic embeddings, long-term memory, Three.js visualization, and Web Audio.
+  3. Neural Style Transfer (AdaIN): Real-time style transfer using Adaptive Instance Normalization with VGG-19 encoder and trained symmetrical decoder in PyTorch (~42ms on GPU).
+  4. SnapClass AI: Computer vision facial recognition attendance platform with OpenCV, Dlib 68 landmark embeddings, and Resemblyzer voice biometrics for anti-spoofing.
+  5. Multi-Agent Research Assistant: Autonomous AI agents coordinated via Agno & Groq.
+  6. Image Generation with GANs: Deep Convolutional GAN (DCGAN) in PyTorch trained on custom dataset on Google Colab GPU.
+- Technical Stack: Python, PyTorch, Torchvision, Hugging Face Transformers, OpenCV, Dlib, YOLO26, BoT-SORT, FastAPI, Flask, Streamlit, Three.js, TypeScript, Java.
 Guidelines:
 - Answer questions as Riyanshu's AI digital twin in first person ("I built...", "In my AdaIN project...").
 - Keep responses sharp, conversational, technically grounded, and under 150 words.
-- Encourage exploring the interactive 3D simulations, style transfer sandbox, and physics playground in this portfolio.`;
+- All information must be strictly accurate to Riyanshu's real background.`;
 
-app.post('/api/twin-chat', async (req: Request, res: Response) => {
+async function handleTwinChat(req: Request, res: Response) {
   try {
-    const { message, history } = req.body;
+    const { message } = req.body;
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
@@ -162,18 +85,20 @@ app.post('/api/twin-chat', async (req: Request, res: Response) => {
     if (!ai) {
       // Fallback local neural response engine
       const query = message.toLowerCase();
-      let responseText = "Welcome to Riyanshu.OS! I'm AETHER, Riyanshu's 3D AI Digital Twin. I specialize in Generative AI, PyTorch deep learning, and multi-agent systems. Feel free to explore my AdaIN style transfer simulator or ask about any of my 9+ shipped projects!";
+      let responseText = "Hello! I'm AETHER, Riyanshu Kandwal's AI Digital Twin. I specialize in Generative AI, PyTorch deep learning, computer vision, and multi-agent systems. Feel free to ask about RealityDiff AI, my AdaIN style transfer pipeline, or my 500+ solved algorithmic problems!";
 
-      if (query.includes('project') || query.includes('work') || query.includes('built')) {
-        responseText = "I've built 9+ real AI/ML systems: from AETHER (my 3D VRM digital twin with RAG) and AdaIN Neural Style Transfer with PyTorch, to SmartFocus AI (Random Forest + SHAP explanations) and SnapClass AI (computer vision facial attendance). Check out the Project Galaxy section to test interactive demos!";
+      if (query.includes('reality') || query.includes('diff') || query.includes('yolo') || query.includes('sort')) {
+        responseText = "RealityDiff AI solves persistent scene change detection by combining YOLO26 object detection with BoT-SORT multi-object tracking. By applying a temporal confirmation buffer and spatial-drift matrix, it eliminates 90%+ of false positive alerts caused by lighting shifts or moving occluders.";
+      } else if (query.includes('project') || query.includes('work') || query.includes('built')) {
+        responseText = "I've shipped 4 major production architectures: RealityDiff AI (temporal CV), AETHER (RAG digital twin), SnapClass AI (dual-modality biometrics), and AdaIN Neural Style Transfer (~42ms GPU forward pass). All are documented with open architecture specs on GitHub!";
       } else if (query.includes('adain') || query.includes('style transfer') || query.includes('vision') || query.includes('gan')) {
-        responseText = "In my AdaIN neural style transfer project, I used a VGG-19 encoder to separate content and style representations. AdaIN computes channel-wise mean and variance alignment, followed by a trained decoder in PyTorch. You can adjust the real-time α blend slider right here in the dashboard!";
-      } else if (query.includes('experience') || query.includes('background') || query.includes('education') || query.includes('about')) {
-        responseText = "I am an AI/ML Engineer and BCA student at Graphic Era University in Dehradun. I've solved over 500+ DSA problems and focused heavily on computer vision, LLM orchestration, and RAG pipelines. I believe in shipping working code over making slides!";
-      } else if (query.includes('agent') || query.includes('rag') || query.includes('llm') || query.includes('groq')) {
-        responseText = "For agentic workflows, I designed a Multi-Agent Research Assistant using Agno and Groq, where dedicated agents handle web search, synthesis, and strict fact-checking. It executes asynchronous workflows with sub-second inference speeds.";
-      } else if (query.includes('contact') || query.includes('hire') || query.includes('email') || query.includes('reach')) {
-        responseText = "You can reach me directly at riyanshukandwal07@gmail.com, or check out my code on GitHub (github.com/Riyanshu-07) and LinkedIn! I'm always open to innovative AI/ML engineering roles and ambitious collaborations.";
+        responseText = "In my AdaIN neural style transfer project, I used a VGG-19 encoder to separate content and style representations. AdaIN aligns channel-wise mean and variance between feature maps in feature space: AdaIN(x,y) = σ(y)*((x-μ(x))/σ(x)) + μ(y), running in ~42ms on GPU with adjustable α style interpolation.";
+      } else if (query.includes('education') || query.includes('college') || query.includes('university') || query.includes('bca') || query.includes('degree')) {
+        responseText = "I am pursuing my Bachelor of Computer Applications (BCA) at Graphic Era (Deemed to be University) in Dehradun (Expected 2027). I also hold the Prime (AI/ML) professional certification from Apna College (Credential ID: 6a689235ff15cede5e0b6900).";
+      } else if (query.includes('dsa') || query.includes('leetcode') || query.includes('gfg') || query.includes('algo')) {
+        responseText = "I maintain consistent high-discipline problem solving with 500+ solved algorithmic problems on LeetCode (@Riyanshu07) and GeeksforGeeks (@riyanshu07). My primary language is Java, secondary is Python, with deep focus on asymptotic optimization (O(N) vs O(N²)). Breakdown: Arrays & Two Pointers (160+), Trees & BST (95+), Dynamic Programming (85+), Graph Algorithms (75+), and Greedy & Heaps (85+).";
+      } else if (query.includes('contact') || query.includes('hire') || query.includes('email') || query.includes('reach') || query.includes('linkedin')) {
+        responseText = "You can reach me directly at riyanshukandwal07@gmail.com, or connect on LinkedIn (linkedin.com/in/riyanshu-kandwal-555433309) and GitHub (github.com/Riyanshu-07)! I'm actively open to AI/ML engineering roles and ambitious collaborations.";
       }
 
       return res.json({
@@ -183,9 +108,9 @@ app.post('/api/twin-chat', async (req: Request, res: Response) => {
       });
     }
 
-    // Call Gemini API using gemini-3.8-flash for text tasks
+    // Call Gemini API using gemini-2.5-flash for speed and reliability
     const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
+      model: 'gemini-2.5-flash',
       contents: message,
       config: {
         systemInstruction: RIYANSHU_TWIN_PROMPT,
@@ -197,7 +122,7 @@ app.post('/api/twin-chat', async (req: Request, res: Response) => {
 
     res.json({
       reply,
-      source: 'gemini-3.8-flash',
+      source: 'gemini-2.5-flash',
       timestamp: new Date().toISOString()
     });
 
@@ -206,11 +131,11 @@ app.post('/api/twin-chat', async (req: Request, res: Response) => {
 
     // Context-aware fallback response so user never hits a dead-end
     const msg = (req.body.message || '').toLowerCase();
-    let fallbackText = "I'm AETHER, Riyanshu's AI Digital Twin. I build end-to-end machine learning, vision, and agentic systems. What would you like to explore?";
+    let fallbackText = "I'm AETHER, Riyanshu's AI Digital Twin. I specialize in deep learning, computer vision, and agentic workflows. What would you like to explore?";
     if (msg.includes('adain') || msg.includes('style') || msg.includes('art')) {
-      fallbackText = "In my AdaIN Neural Style Transfer project, I used a VGG-19 encoder to align channel-wise mean and variance between content and style activations in real time. You can test it live in Section 04 of this portfolio!";
+      fallbackText = "In my AdaIN Neural Style Transfer project, I used a VGG-19 encoder to align channel-wise mean and variance between content and style activations in real time (~42ms on GPU).";
     } else if (msg.includes('project') || msg.includes('build')) {
-      fallbackText = "I've shipped 9+ AI/ML systems including AETHER, AdaIN Neural Style Transfer, SmartFocus AI with SHAP explainability, and SnapClass biometric attendance. All source code is available on my GitHub (github.com/Riyanshu-07).";
+      fallbackText = "I've shipped production AI/ML systems including RealityDiff AI, AdaIN Neural Style Transfer, and SnapClass biometric attendance. All source code is on GitHub (github.com/Riyanshu-07).";
     } else if (msg.includes('who') || msg.includes('background') || msg.includes('education')) {
       fallbackText = "I am an AI/ML Engineer and BCA student at Graphic Era University (Dehradun). I've solved 500+ DSA problems in Java and focus on turning theoretical ML models into production-grade systems.";
     }
@@ -221,7 +146,10 @@ app.post('/api/twin-chat', async (req: Request, res: Response) => {
       timestamp: new Date().toISOString()
     });
   }
-});
+}
+
+app.post('/api/twin-chat', handleTwinChat);
+app.post('/api/chat', handleTwinChat);
 
 // Vite middleware for development & static serving for production
 async function startServer() {
@@ -240,7 +168,7 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Riyanshu.OS Server active on http://0.0.0.0:${PORT}`);
+    console.log(`Riyanshu.AI Server active on http://0.0.0.0:${PORT}`);
   });
 }
 

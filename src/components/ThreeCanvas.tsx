@@ -580,10 +580,7 @@ export const ThreeCanvas: React.FC<ThreeCanvasProps> = ({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full pointer-events-auto select-none overflow-hidden"
-      style={{
-        background: `radial-gradient(circle at 50% 40%, ${theme.bgSecondary} 0%, ${theme.bg} 85%)`,
-      }}
+      className="absolute inset-0 w-full h-full pointer-events-auto select-none overflow-hidden bg-transparent"
     />
   );
 };
