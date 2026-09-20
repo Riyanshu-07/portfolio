@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AETHER 3D Avatar</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, "JetBrains Mono", monospace, sans-serif;
+      user-select: none;
+    }
+    #avatar-container {
+      position: fixed; inset: 0; width: 100%; height: 100%; overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 88%, rgba(99,102,241,0.22) 0%, rgba(34,211,238,0.08) 35%, transparent 70%),
+        radial-gradient(circle at 50% 35%, rgba(129,140,248,0.12), transparent 55%),
+        linear-gradient(180deg, rgba(6,10,18,0.4) 0%, rgba(3,5,10,0.85) 100%);
+    }
+    .pedestal {
+      position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+      width: 240px; height: 50px; border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(99,102,241,0.35) 0%, rgba(34,211,238,0.15) 45%, transparent 75%);
+      filter: blur(8px); pointer-events: none; z-index: 10;
+      animation: pedestalPulse 4s ease-in-out infinite;
+    }
+    .pedestal-ring {
+      position: fixed; bottom: 25px; left: 50%;
+      transform: translateX(-50%) rotateX(75deg);
+      width: 200px; height: 200px; border-radius: 50%;
+      border: 1px solid rgba(129,140,248,0.3);
+      box-shadow: 0 0 15px rgba(99,102,241,0.3), inset 0 0 15px rgba(34,211,238,0.2);
+      pointer-events: none; z-index: 10;
+      animation: ringRotate 20s linear infinite;
+    }
+    @keyframes pedestalPulse {
+      0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(0.95); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+    }
+    @keyframes ringRotate {
+      from { transform: translateX(-50%) rotateX(75deg) rotateZ(0deg); }
+      to { transform: translateX(-50%) rotateX(75deg) rotateZ(360deg); }
+    }
+    .vignette {
+      position: fixed; inset: 0; pointer-events: none; z-index: 20;
+      box-shadow: inset 0 0 70px rgba(0,0,0,0.7);
+    }
+    .scanlines {
+      position: fixed; inset: 0; pointer-events: none; z-index: 21;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+      background-size: 100% 3px, 6px 100%; opacity: 0.25;
+    }
+    canvas { display: block; width: 100% !important; height: 100% !important; position: relative; z-index: 5; }
+    #avatar-status {
+      position: fixed; top: 12px; left: 14px; z-index: 50;
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 10px; border-radius: 999px;
+      background: rgba(5,9,18,0.85); border: 1px solid rgba(129,140,248,0.25);
+      color: #a5b4fc; font-size: 9px; font-weight: 700; letter-spacing: 1px;
+      backdrop-filter: blur(12px);
+    }
+    #avatar-status .dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #22d3ee;
+      box-shadow: 0 0 8px #22d3ee;
+    }
+    #loading-indicator {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 60; color: #38bdf8; font-size: 11px; font-weight: 600;
+      background: rgba(10,15,30,0.85); border: 1px solid rgba(56,189,248,0.3);
+      padding: 8px 16px; border-radius: 8px; backdrop-filter: blur(8px);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .spinner {
+      width: 14px; height: 14px; border: 2px solid rgba(56,189,248,0.2);
+      border-top-color: #38bdf8; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="avatar-container"></div>
+  <div class="pedestal"></div>
+  <div class="pedestal-ring"></div>
+  <div class="vignette"></div>
+  <div class="scanlines"></div>
+  
+  <div id="avatar-status">
+    <span class="dot" id="status-dot"></span>
+    <span id="status-text">AETHER // ONLINE</span>
+  </div>
+
+  <div id="loading-indicator">
+    <div class="spinner"></div>
+    <span id="loading-msg">SYNTHESIZING 3D VRM AVATAR...</span>
+  </div>
+
+  <script type="module">
+    import { THREE, OrbitControls, GLTFLoader, VRMLoaderPlugin, VRMUtils } from "/avatar-engine.bundle.js";
+
+    const AVATAR_MODEL = "/models/digital_twin.vrm";
+
+    const container = document.getElementById("avatar-container");
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    // Camera framed on upper body/face
+    const camera = new THREE.PerspectiveCamera(32, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 1.35, 2.3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    container.appendChild(renderer.domElement);
+
+    // Multi-point lighting for vivid rendering
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.4);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.8);
+    keyLight.position.set(2, 4, 3);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0xc7d2fe, 1.6);
+    fillLight.position.set(-3, 2, 2);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0x818cf8, 2.5);
+    rimLight.position.set(0, 3, -3);
+    scene.add(rimLight);
+
+    const rimLight2 = new THREE.DirectionalLight(0x22d3ee, 1.8);
+    rimLight2.position.set(-2, 1, -2);
+    scene.add(rimLight2);
+
+    // Subtle background cyber dust particles
+    const particleCount = 60;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      pPos[i] = (Math.random() - 0.5) * 4;
+      pPos[i + 1] = Math.random() * 2.2;
+      pPos[i + 2] = (Math.random() - 0.5) * 4;
+    }
+    pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({
+      color: 0x818cf8,
+      size: 0.025,
+      transparent: true,
+      opacity: 0.7,
+      blending: THREE.AdditiveBlending
+    });
+    const particleField = new THREE.Points(pGeo, pMat);
+    scene.add(particleField);
+
+    // Orbit controls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+    controls.enablePan = false;
+    controls.minDistance = 1.2;
+    controls.maxDistance = 4.0;
+    controls.target.set(0, 1.25, 0);
+
+    // VRM Loader
+    const loader = new GLTFLoader();
+    loader.register((parser) => new VRMLoaderPlugin(parser));
+
+    let currentVrm = null;
+    let avatarSpeaking = false;
+
+    const lookAtTarget = new THREE.Object3D();
+    lookAtTarget.position.set(0, 1.35, 2.0);
+    camera.add(lookAtTarget);
+
+    let targetMouseX = 0, targetMouseY = 0;
+    let currentLookX = 0, currentLookY = 0;
+
+    window.addEventListener("mousemove", (event) => {
+      const normX = (event.clientX / window.innerWidth) * 2 - 1;
+      const normY = -((event.clientY / window.innerHeight) * 2 - 1);
+      targetMouseX = THREE.MathUtils.clamp(normX * 1.5, -1.2, 1.2);
+      targetMouseY = THREE.MathUtils.clamp(normY * 0.8, -0.6, 0.8);
+    });
+
+    const loadingIndicator = document.getElementById("loading-indicator");
+
+    loader.load(
+      AVATAR_MODEL,
+      (gltf) => {
+        const vrm = gltf.userData.vrm;
+        if (vrm) {
+          currentVrm = vrm;
+          // Optimize VRM meshes & rotate VRM0 if needed
+          if (VRMUtils) {
+            if (VRMUtils.rotateVRM0) VRMUtils.rotateVRM0(vrm);
+            if (VRMUtils.removeUnnecessaryVertices) VRMUtils.removeUnnecessaryVertices(gltf.scene);
+            if (VRMUtils.removeUnnecessaryJoints) VRMUtils.removeUnnecessaryJoints(gltf.scene);
+          }
+
+          scene.add(currentVrm.scene);
+          currentVrm.scene.position.set(0, 0, 0);
+
+          if (currentVrm.lookAt) {
+            currentVrm.lookAt.target = lookAtTarget;
+          }
+
+          if (loadingIndicator) loadingIndicator.style.display = "none";
+          console.log("✅ AETHER VRM avatar successfully loaded & initialized:", vrm.meta?.name || "digital_twin");
+        } else {
+          // Fallback if gltf is loaded without vrm property
+          scene.add(gltf.scene);
+          if (loadingIndicator) loadingIndicator.style.display = "none";
+          console.log("✅ Fallback GLTF model loaded");
+        }
+      },
+      (progress) => {
+        if (progress.total > 0 && loadingIndicator) {
+          const pct = Math.round((progress.loaded / progress.total) * 100);
+          const msg = document.getElementById("loading-msg");
+          if (msg) msg.textContent = `LOADING 3D AVATAR (${pct}%)...`;
+        }
+      },
+      (err) => {
+        console.error("VRM load error:", err);
+        if (loadingIndicator) {
+          loadingIndicator.innerHTML = `<span style="color:#f87171">VRM MODEL LOAD ERROR: ${err.message || 'Check console'}</span>`;
+        }
+      }
+    );
+
+    // Idle animation & Breathing
+    let idleTime = 0;
+    function updateIdleMovement(delta) {
+      if (!currentVrm || !currentVrm.humanoid) return;
+      idleTime += delta;
+      const head = currentVrm.humanoid.getNormalizedBoneNode("head");
+      const neck = currentVrm.humanoid.getNormalizedBoneNode("neck");
+      const spine = currentVrm.humanoid.getNormalizedBoneNode("spine");
+      const chest = currentVrm.humanoid.getNormalizedBoneNode("chest") || currentVrm.humanoid.getNormalizedBoneNode("upperChest");
+
+      const breath = Math.sin(idleTime * 1.3) * 0.012;
+      const swayX = Math.sin(idleTime * 0.7) * 0.02;
+      const swayY = Math.cos(idleTime * 0.5) * 0.015;
+      const tiltZ = Math.sin(idleTime * 0.35) * 0.008;
+
+      if (spine) spine.rotation.x = breath * 0.6;
+      if (chest) chest.rotation.x = breath * 0.4;
+      if (neck) {
+        neck.rotation.x = breath * 0.3 + swayX * 0.25;
+        neck.rotation.y = swayY * 0.3;
+      }
+      if (head) {
+        head.rotation.x = swayX * 0.6;
+        head.rotation.y = swayY * 0.5;
+        head.rotation.z = tiltZ;
+      }
+    }
+
+    // Speaking movement
+    function updateSpeakingMovement(delta) {
+      if (!currentVrm || !currentVrm.humanoid || !avatarSpeaking) return;
+      idleTime += delta;
+      const head = currentVrm.humanoid.getNormalizedBoneNode("head");
+      const neck = currentVrm.humanoid.getNormalizedBoneNode("neck");
+      const spine = currentVrm.humanoid.getNormalizedBoneNode("spine");
+      const speechTime = performance.now() * 0.003;
+
+      const nod = Math.sin(speechTime * 2.4) * 0.04 + Math.sin(speechTime * 4.8) * 0.012;
+      const sway = Math.sin(speechTime * 1.1) * 0.025;
+      const tilt = Math.cos(speechTime * 0.9) * 0.018;
+
+      if (spine) spine.rotation.x = Math.sin(speechTime * 1.2) * 0.008;
+      if (neck) {
+        neck.rotation.x = nod * 0.35;
+        neck.rotation.y = sway * 0.35;
+      }
+      if (head) {
+        head.rotation.x = nod * 0.65;
+        head.rotation.y = sway * 0.55;
+        head.rotation.z = tilt;
+      }
+    }
+
+    // Blinking
+    let blinkTimer = 0;
+    let nextBlink = 3 + Math.random() * 3;
+    function updateBlinking(delta) {
+      if (!currentVrm || !currentVrm.expressionManager) return;
+      blinkTimer += delta;
+      if (blinkTimer >= nextBlink) {
+        blinkTimer = 0;
+        nextBlink = 2.5 + Math.random() * 3.5;
+        const expressionManager = currentVrm.expressionManager;
+        expressionManager.setValue("blink", 1);
+        setTimeout(() => {
+          if (currentVrm && currentVrm.expressionManager) {
+            currentVrm.expressionManager.setValue("blink", 0);
+          }
+        }, 120);
+      }
+    }
+
+    // Lip sync / mouth movement simulation while speaking
+    let mouthPhase = 0;
+    function updateLipSync(delta) {
+      if (!currentVrm || !currentVrm.expressionManager) return;
+      if (avatarSpeaking) {
+        mouthPhase += delta * 14;
+        const v = Math.abs(Math.sin(mouthPhase)) * 0.75 + Math.random() * 0.2;
+        currentVrm.expressionManager.setValue("aa", Math.min(1, v));
+      } else {
+        currentVrm.expressionManager.setValue("aa", 0);
+      }
+    }
+
+    // Message receiver from parent window
+    window.addEventListener("message", (e) => {
+      if (e.data && (e.data.type === "AETHER_SPEAKING" || e.data.speaking !== undefined)) {
+        avatarSpeaking = Boolean(e.data.speaking ?? e.data.value);
+        const dot = document.getElementById("status-dot");
+        const txt = document.getElementById("status-text");
+        if (avatarSpeaking) {
+          dot.style.background = "#38bdf8";
+          dot.style.boxShadow = "0 0 12px #38bdf8";
+          txt.textContent = "AETHER // TRANSMITTING";
+        } else {
+          dot.style.background = "#22d3ee";
+          dot.style.boxShadow = "0 0 8px #22d3ee";
+          txt.textContent = "AETHER // ONLINE";
+        }
+      }
+    });
+
+    const clock = new THREE.Clock();
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.05);
+
+      if (currentVrm) {
+        currentLookX += (targetMouseX - currentLookX) * 0.06;
+        currentLookY += (targetMouseY - currentLookY) * 0.06;
+        lookAtTarget.position.x = currentLookX;
+        lookAtTarget.position.y = 1.35 + currentLookY * 0.35;
+        lookAtTarget.position.z = 2.0;
+
+        currentVrm.update(delta);
+        if (avatarSpeaking) {
+          updateSpeakingMovement(delta);
+        } else {
+          updateIdleMovement(delta);
+        }
+        updateBlinking(delta);
+        updateLipSync(delta);
+      }
+
+      if (particleField) {
+        particleField.rotation.y += delta * 0.04;
+      }
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

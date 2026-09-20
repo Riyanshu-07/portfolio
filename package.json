@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
+    "bundle:avatar": "esbuild src/avatar-bundle-entry.js --bundle --format=esm --minify --outfile=public/avatar-engine.bundle.js",
+    "dev": "npm run bundle:avatar && tsx server.ts",
+    "build": "npm run bundle:avatar && vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "start": "node dist/server.cjs",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
@@ -13,6 +14,7 @@
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
+    "@pixiv/three-vrm": "^3.5.5",
     "@tailwindcss/vite": "^4.1.14",
     "@types/canvas-confetti": "^1.9.0",
     "@types/three": "^0.186.0",
